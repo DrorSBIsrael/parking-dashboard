@@ -1,501 +1,3 @@
-
-
-parking-dashboard.txt
-710 lines
-
-txt
-
-סיכום מה שעשינו:
-✅ מה שהושג:
-1. מסך ניהול פרויקטים מתקדם - 3 טורים צבעוניים
-2. עיצוב מודרני - רקע אפור, צבעי עדיפות, אנימציות
-3. שעה ותאריך בזמן ישראל - מתעדכן כל שנייה
-4. עברית תקינה - UTF-8 מתוקן
-5. GitHub Pages - הקוד מועלה לאינטרנט
-❌ מה שעדיין לא עובד:
-1. הקריאה מ-Google Sheets - לא מושך נתונים אמיתיים
-2. רענון אוטומטי - לא מתעדכן כל 3 דקות
-3. הלינק של GitHub - 404 שגיאה
-🔧 הבעיות הטכניות:
-* CORS Policy - הדפדפן חוסם קריאות ל-Google Sheets
-* GitHub Pages - צריך תיקון בהגדרות
-* נתונים קשיחים בקוד - במקום דינמיים
-📋 מה צריך לתקן מחר:
-1. תיקון GitHub Pages - לינק יעבוד
-2. קריאה אמיתית מ-Google Sheets - ללא CORS
-3. מחיקת נתונים קשיחים - הכל יגיע מהטבלה
-4. רענון אוטומטי - כל שינוי בטבלה יופיע במסך
-🎯 המטרה הסופית:
-מסך חי שמתעדכן אוטומטי מהטבלה שלך, ללא צורך בעדכון קוד.
-מחר נתחיל עם תיקון הקריאה מ-Google Sheets וה-GitHub Pages.
-
-Edit
-אני רואה שאתה עובד על מערכת לוח בקרה לניהול חניות. הקוד שצירפת הוא דף HTML שמציג 3 טורים: משימות שוטפות, פרויקטים ואספקת ציוד.
-
-בואו נעבור על הבעיות שזיהית ונתקן אותן צעד אחר צעד:
-
-שלב 1: תיקון GitHub Pages
-הבעיה: הלינק לא עובד (שגיאת 404)
-
-הפתרון:
-
-היכנס ל-GitHub לחשבון שלך
-כנס לפרויקט (Repository) שיצרת
-לחץ על "Settings" (הגדרות) בתפריט העליון
-גלול למטה עד לחלק "Pages"
-תחת "Source" בחר "Deploy from a branch"
-בחר "main" או "master" כענף
-שמור
-חכה 5-10 דקות והלינק יעבוד
-שלב 2: תיקון הקריאה מ-Google Sheets
-הבעיה: CORS Policy חוסמת את הקריאה
-
-הפתרון: נשתמש ב-Google Apps Script במקום קריאה ישירה
-
-צעדים מפורטים:
-פתח את Google Sheets שלך
-לחץ על Extensions > Apps Script
-מחק את הקוד הקיים והדבק את זה:
-
-Google Apps Script - נתונים לאתר
-Code 
-שמור את הפרויקט (Ctrl+S)
-לחץ על "Deploy" > "New deployment"
-בחר "Web app"
-הגדר:
-Execute as: Me
-Who has access: Anyone
-לחץ "Deploy"
-העתק את ה-URL שמתקבל
-שלב 3: עדכון הקוד באתר
-עכשיו נעדכן את הקוד באתר כדי שישתמש ב-URL החדש:
-
-
-לוח בקרה מעודכן - עם חיבור אמיתי לגוגל
-Interactive artifact 
-שלב 4: הנחיות סיום
-מה שצריך לעשות עכשיו:
-
-העלה את הקוד המעודכן ל-GitHub:
-החלף את הקובץ הקיים בקוד החדש
-שנה את השורה עם YOUR_SCRIPT_ID ל-URL של ה-Apps Script שלך
-בדוק שה-Google Sheets מסודר כך:
-A1: כותרת משימות | B1: עדיפות | C1: ציוד
-D1: כותרת פרויקטים | E1: עדיפות | F1: ציוד  
-G1: כותרת אספקה | H1: עדיפות | I1: ציוד
-רענן את GitHub Pages (לוקח 5-10 דקות)
-האם זה ברור? יש לך שאלות על איזה שלב?
-
-אני כאן לעזור לך להשלים את התהליך צעד אחר צעד!
-
-
-
-
-image.png
-אני בשלב 1 , צריך את זה לאט
-
-Edit
-מעולה! אני רואה שאתה ב-GitHub Pages. בואו נעשה את זה לאט ובצעדים קטנים.
-
-שלב 1.1: בחירת הענף הנכון
-מה שאני רואה במסך שלך:
-
-יש לך תפריט פתוח לבחירת ענף (Branch)
-אתה צריך לבחור "main"
-מה לעשות עכשיו:
-
-לחץ על "main" (שם הענף) ברשימה
-לחץ על "None" מתחת לזה
-לחץ "Save" (כפתור שמור)
-תוצאה צפויה: אחרי שתשמור, תראה הודעה שאומרת "GitHub Pages is building your site"
-
-מה קורה אחרי זה?
-GitHub לוקח את הקוד שלך ומכין ממנו אתר אינטרנט. זה לוקח 5-10 דקות.
-
-האם ביצעת את השלבים האלה? תגיד לי מה קרה אחרי שלחצת "Save".
-
-אני אחכה לתשובה שלך לפני שנמשיך לשלב הבא! 🙂
-
-
-
-
-GitHub Pages source saved.
-
-Edit
-מעולה! 🎉
-
-מה שקרה עכשיו:
-✅ GitHub Pages הוגדר בהצלחה! ✅ האתר נבנה ברקע
-
-שלב 1.2: בדיקה שהאתר עובד
-עכשיו צריך לחכות 5-10 דקות ואז לבדוק שהלינק עובד.
-
-הלינק שלך הוא: https://drorsisrael.github.io/parking-dashboard/
-
-מה לעשות עכשיו:
-
-חכה 5 דקות ⏰
-לחץ על הלינק או העתק אותו לדפדפן
-תגיד לי מה אתה רואה - האם המסך נטען?
-במקביל, בואו נכין את השלב הבא:
-
-בעוד 5 דקות, אחרי שנוודא שהאתר עובד, נתחיל לעבוד על חיבור ל-Google Sheets.
-
-מוכן לחכות 5 דקות ואז לבדוק את הלינק? 🙂
-
-
-
-
-image.png
-לא עובד
-
-Edit
-אני רואה שעדיין יש שגיאת 404. זה אומר שצריך לבדוק שני דברים:
-
-שלב 1.3: בדיקה שיש קובץ באתר
-הבעיה: ייתכן שאין קובץ index.html בפרויקט שלך.
-
-בואו נבדוק:
-
-חזור ל-GitHub (לדף הפרויקט שלך)
-תראה לי מה יש ברשימת הקבצים - האם יש קובץ בשם index.html?
-אם אין קובץ index.html:
-צריך ליצור אותו. זה קל:
-
-לחץ על "Add file" > "Create new file"
-כתוב index.html בשם הקובץ
-העתק את הקוד שיצרתי לך (הקוד של לוח הבקרה)
-שמור
-אם יש קובץ index.html:
-אז צריך לחכות עוד קצת - לפעמים זה לוקח עד 10-15 דקות.
-
-תוכל לספר לי מה אתה רואה ברשימת הקבצים ב-GitHub?
-
-זה יעזור לי להבין מה הבעיה ולתקן אותה! 🔍
-
-
-
-
-image.png
-בניסיון לבצע פרסום ב googel Apps Script
-
-Edit
-
-
-מעולה! אני רואה שאתה בתהליך יצירת Google Apps Script. זה בדיוק מה שאנחנו צריכים לשלב 2.
-
-שלב 2.1: בחירת חשבון Google
-מה לעשות עכשיו:
-
-לחץ על החשבון שלך - "Dror Prince" (dror@sbparking.co.il)
-המשך בתהליך ההתחברות
-אחרי שתיכנס ל-Google Apps Script:
-נעשה את השלבים הבאים בסדר:
-
-שלב 2.2: יצירת הסקריפט
-תראה מסך חדש עם עורך קוד
-תמחק את כל הקוד שיש שם
-תעתיק את הקוד שהכנתי לך (הקוד ב-JavaScript שיצרתי למעלה)
-שלב 2.3: שמירה ופרסום
-תשמור את הפרויקט
-תפרסם אותו כ-Web App
-תקבל לינק מיוחד
-בואו נעשה את זה צעד אחר צעד.
-
-לחץ על החשבון שלך ותגיד לי איך נראה המסך הבא! 👍
-
-
-
-
-image.png
-Edit
-אני רואה שGoogle מציג אזהרת אבטחה. זה נורמלי כשיוצרים Apps Script חדש.
-
-שלב 2.2: מעבר דרך האזהרה
-מה לעשות:
-
-לחץ על "Advanced" (מתקדם) - בפינה השמאלית התחתונה
-אחרי זה תראה אפשרות נוספת - לחץ על הקישור שאומר משהו כמו "Go to ... (unsafe)" או "Continue to..."
-זה בטוח - זה האפליקציה שלך, רק שGoogle עדיין לא מכיר אותה.
-
-למה זה קורה?
-Google Apps Script הוא חדש ועוד לא מאומת
-זה נורמלי לחלוטין בפיתוח
-ברגע שנסיים את ההגדרות, זה יעבוד מצוין
-לחץ על "Advanced" ותגיד לי מה מופיע אחר כך! 👍
-
-
-
-
-image.png
-Edit
-מעולה! עכשיו Google מבקש הרשאה לגשת ל-Google Sheets שלך. זה בדיוק מה שאנחנו צריכים!
-
-שלב 2.3: אישור הגישה
-מה לעשות:
-
-לחץ על "Allow" (אישור) - הכפתור הכחול בתחתית
-למה זה בטוח?
-
-זה הסקריפט שלך שאתה יוצר
-הוא רק יקרא נתונים מ-Google Sheets שלך
-הוא לא ישנה או ימחק כלום
-אחרי שתלחץ "Allow":
-תגיע למסך עורך הקוד של Google Apps Script. שם נכניס את הקוד שיקרא את הנתונים מהטבלה שלך.
-
-לחץ "Allow" ותגיד לי איך נראה המסך הבא! 👍
-
-
-
-
-מה אתה צריך כדי להתקדם ? מזהה פריסה
-AKfycbyFSEtvMev-XTMkdUAzTpXduWkqqC7FYHUIjmb2XXUZQF9N3mAAfkbcPRj8yNfShUXOFQ
-content_copyהעתקה
-אפליקציית אינטרנט
-כתובת URL
-https://script.google.com/macros/s/AKfycbyFSEtvMev-XTMkdUAzTpXduWkqqC7FYHUIjmb2XXUZQF9N3mAAfkbcPRj8yNfShUXOFQ/exec
-content_copyהעתקה
-סיום
-
-Edit
-מצוין! 🎉 קיבלת את ה-URL!
-
-שלב 2.4: עכשיו נחבר את האתר ל-Google Sheets
-יש לנו את כל מה שצריך: ✅ האתר ב-GitHub Pages
-✅ Google Apps Script עם URL
-
-מה לעשות עכשיו:
-1. חזור ל-GitHub
-חזור לפרויקט שלך ב-GitHub (parking-dashboard)
-
-2. ערוך את הקובץ index.html
-לחץ על הקובץ index.html
-לחץ על עיפרון (Edit)
-חפש את השורה:
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
-3. החלף את ה-URL
-מחק את YOUR_SCRIPT_ID והכנס את ה-URL שקיבלת:
-
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFSEtvMev-XTMkdUAzTpXduWkqqC7FYHUIjmb2XXUZQF9N3mAAfkbcPRj8yNfShUXOFQ/exec';
-4. שמור את השינויים
-לחץ "Commit changes"
-
-מוכן לעשות את זה? תגיד לי אם אתה צריך עזרה באיזה שלב! 👍
-
-
-
-
-זה לא מציג דף , אתה יכול לעדכן כאן את הקוד כדי שנבדוק,
-
-Edit
-אתה צודק! בואו נעדכן את הקוד עם ה-URL שקיבלת ונבדוק שהכל עובד:
-
-
-לוח בקרה מעודכן - עם חיבור אמיתי לגוגל
-Interactive artifact ∙ Version 2 
-המצב עכשיו נראה טוב יותר! בואו נתקן עוד כמה דברים קטנים כדי שהמסך יעבוד מצוין גם אם אין חיבור ל-Google Sheets:
-
-
-לוח בקרה מעודכן - עם חיבור אמיתי לגוגל
-Interactive artifact ∙ Version 3 
-מצוין! עכשיו הקוד מעודכן עם:
-
-✅ ה-URL הנכון של Google Apps Script
-✅ נתונים לדוגמה שנראים טוב
-✅ חיווי סטטוס מחובר/לא מחובר
-
-מה לעשות עכשיו:
-
-העתק את כל הקוד המעודכן (מהארטיפקט למעלה)
-חזור ל-GitHub
-החלף את התוכן של index.html בקוד החדש
-שמור
-בדוק שהאתר עובד: https://drorsisrael.github.io/parking-dashboard/
-האתר צריך להראות עכשיו את המסך עם 3 הטורים ונתונים לדוגמה!
-
-אתה רוצה שאני אעזור לך להעתיק את הקוד ל-GitHub? 🚀
-
-
-
-
-לא עובד, גם כאן נראה שגיאה בחיבור , ובדף אינטרנט קוד 404, שאלה ? צריך ליצור render ?
-
-Edit
-אתה צודק! יש לנו שתי בעיות:
-
-בעיה 1: אין קובץ באתר (404)
-האתר לא מוצא את הקובץ. זה אומר שצריך ליצור קובץ index.html ב-GitHub.
-
-בעיה 2: השגיאה בחיבור
-זה נורמלי - Google Apps Script צריך את הנתונים מהטבלה שלך.
-
-פתרון צעד אחר צעד:
-שלב 1: יצירת קובץ באתר
-בואו ניצור את הקובץ מהתחלה:
-
-כנס ל-GitHub לפרויקט שלך
-לחץ "Add file" > "Create new file"
-כתוב index.html בשם הקובץ
-העתק את הקוד שלמעלה לתוכן הקובץ
-לחץ "Commit new file"
-שלב 2: הכנת הטבלה ב-Google Sheets
-צריך ליצור טבלה עם העמודות הנכונות:
-
-A1: משימות שוטפות | B1: עדיפות | C1: ציוד
-D1: פרויקטים | E1: עדיפות | F1: ציוד  
-G1: אספקת ציוד | H1: עדיפות | I1: ציוד
-אתה מעדיף:
-
-שנתחיל עם יצירת הקובץ ב-GitHub?
-או שנכין קודם את הטבלה ב-Google Sheets?
-לא צריך Render - GitHub Pages זה בדיוק מה שאנחנו צריכים! 👍
-
-איך אתה רוצה להתחיל?
-
-
-
-
-לא , יש לי גם GitHub תקין וגם  Googel Sheets ,ehi
-
-Edit
-אה מעולה! אם יש לך גם GitHub תקין וגם Google Sheets, אז הבעיה היא כנראה קטנה.
-
-בואו נבדוק צעד אחר צעד:
-שלב 1: בדיקת Google Sheets
-תוכל לחלוק איתי את ה-Google Sheets שלך?
-
-פתח את הטבלה
-לחץ "Share" (שתף)
-שנה ל-"Anyone with the link can view"
-שלח לי את הלינק
-שלב 2: בדיקת מבנה הטבלה
-איך הטבלה שלך מסודרת? תוכל לספר לי מה יש בעמודות A, B, C, D וכו'?
-
-שלב 3: בדיקת GitHub
-האם יש קובץ index.html בפרויקט ה-GitHub שלך? תוכל להראות לי צילום מסך של רשימת הקבצים?
-
-בינתיים, בואו נבדוק משהו פשוט:
-נסה את הלינק הזה: https://drorsisrael.github.io/parking-dashboard/
-
-מה אתה רואה?
-
-404 (דף לא נמצא)?
-דף ריק?
-או משהו אחר?
-תגיד לי מה קורה ואני אעזור לתקן את הבעיה בדיוק! 🔍
-
-
-
-
-אתה טועה , אנחנו בנינו googel Apps scripts
-
-Edit
-אתה צודק לחלוטין! סליחה על הבלבול.
-
-מה יש לנו עד עכשיו:
-✅ Google Apps Script - עם URL: https://script.google.com/macros/s/AKfycbyFSEtvMev-XTMkdUAzTpXduWkqqC7FYHUIjmb2XXUZQF9N3mAAfkbcPRj8yNfShUXOFQ/exec
-
-✅ GitHub Repository - parking-dashboard
-
-הבעיה: האתר מציג 404 וחיבור לא עובד
-
-צעדים לתיקון:
-1. מה יש ב-Google Apps Script?
-האם הכנסת את הקוד שהכנתי לך ל-Apps Script? (הקוד ב-JavaScript שקורא מהטבלה)
-
-2. מה יש ב-GitHub?
-איך נראית רשימת הקבצים בפרויקט שלך?
-
-3. איך נראית הטבלה?
-איך מסודרת הטבלה ב-Google Sheets שלך?
-
-תוכל להראות לי צילום מסך מה יש בפרויקט ה-GitHub שלך?
-
-אני צריך לראות אם יש שם קובץ index.html ומה בתוכנו כדי לתקן את הבעיה! 🔧
-
-
-
-
-ב https://script.google.com/macros/s/AKfycbyFSEtvMev-XTMkdUAzTpXduWkqqC7FYHUIjmb2XXUZQF9N3mAAfkbcPRj8yNfShUXOFQ/exec אני רואה את הנתונים , [{"column":"tasks","title":"לב העיר שלט- הפעלה דחוף","description":"משימות שוטפות","priority":1,"equipment":"תוכנה"},{"column":"projects","title":"אחוזת שטנר - ירושלים - 11/05","description":"פרויקטים","priority":1,"equipment":"מחשבים"},{"column":"supply","title":"ים חניונים - 100K לוגו","description":"אספקת ציוד","priority":1,"equipment":"כרטיסים"},{"column":"tasks","title":"פניקס ראשון - 4 יחידות להחליף פנל סורק בפאנל אשראי","description":"משימות שוטפות","priority":1,"equipment":"תאום כניסה"},{"column":"projects","title":"דיזינגוף עליון - מצלמות","description":"פרויקטים","priority":1,"equipment":"מצלמות"},{"column":"supply","title":"בית השנהב - 100K לוגו","description":"אספקת ציוד","priority":1,"equipment":"כרטיסים"},{"column":"tasks","title":"על בנסטר דיזינגוף - חריצת לולאה יחידה 222","description":"משימות שוטפות","priority":2,"equipment":"קבלן"},{"column":"projects","title":"מגאסון - פניקס","description":"פרויקטים","priority":4,"equipment":"מערכת"},{"column":"supply","title":"מגדל המוזיאון - 60 לבן + 20 צהוב","description":"אספקת ציוד","priority":2,"equipment":"כרטיסים"},{"column":"tasks","title":"ביג גלילות - SSL","description":"משימות שוטפות","priority":2,"equipment":"לא צוין"},{"column":"projects","title":"מודיעין - הוספת נתיב חניון 21 - תקשורת","description":"פרויקטים","priority":5,"equipment":"ציוד"},{"column":"supply","title":"אינטרקונטיננטל - 20K לבן - איסוף עצמי","description":"אספקת ציוד","priority":4,"equipment":"כרטיסים"},{"column":"tasks","title":"בית ויקטוריה הדרכה - יש לתאם בין ה - 10/06-12/06","description":"משימות שוטפות","priority":3,"equipment":"לא צוין"},{"column":"projects","title":"עזריאלי - דיור מוגן רקפות ( יש אישור )","description":"פרויקטים","priority":6,"equipment":"ציוד"},{"column":"tasks","title":"כפר סבא הירוקה - חריצת לולאה X2","description":"משימות שוטפות","priority":4,"equipment":"לא צוין"},{"column":"projects","title":"מבנה - ת\"א - שידרוג חניון","description":"פרויקטים","priority":7,"equipment":"4 כניסות ויציאות"},{"column":"tasks","title":"עזריאלי גבעתיים - 2 מצלמות","description":"משימות שוטפות","priority":6,"equipment":"לא צוין"},{"column":"projects","title":"מבנה - הסוללים","description":"פרויקטים","priority":8,"equipment":"לא צוין"},{"column":"projects","title":"מבנה - שער הנגב(הותקן מודם)","description":"פרויקטים","priority":3,"equipment":"לא צוין"},{"column":"projects","title":"שרונה מרקט -יחידת מנויים+מצלמה + העתקת 2 מחסומים","description":"פרויקטים","priority":3,"equipment":"לא צוין"},{"column":"projects","title":"שערי חדרה","description":"פרויקטים","priority":9,"equipment":"לא צוין"},{"column":"projects","title":"מגאסון ביונד","description":"פרויקטים","priority":2,"equipment":"לא צוין"},{"column":"projects","title":"מאיה טורס","description":"פרויקטים","priority":10,"equipment":"לא צוין"},{"column":"projects","title":"אפלייד רחובות","description":"פרויקטים","priority":11,"equipment":"לא צוין"},{"column":"projects","title":"מגדל איילון","description":"פרויקטים","priority":12,"equipment":"לא צוין"},{"column":"projects","title":"מגדל המאה - העתקת ציוד","description":"פרויקטים","priority":13,"equipment":"לא צוין"}]
-
-Edit
-מעולה! 🎉 Google Apps Script עובד מצוין!
-
-אני רואה שהנתונים מגיעים נכון מהטבלה שלך. עכשיו הבעיה היא רק שהאתר ב-GitHub לא מציג את הדף.
-
-הבעיה: חסר קובץ index.html ב-GitHub
-בואו ניצור את הקובץ:
-
-שלב 1: כנס ל-GitHub
-כנס לפרויקט שלך: https://github.com/drorsisrael/parking-dashboard
-לחץ על "Add file" > "Create new file"
-כתוב index.html בשם הקובץ
-שלב 2: העתק את הקוד
-**קח את הקוד המעודכן הזה (**עם ה-URL הנכון של ה-Apps Script שלך):
-
-
-לוח בקרה - קוד סופי עובד
-Interactive artifact 
-שלב 3: שמור ב-GitHub
-הדבק את הקוד לקובץ החדש
-לחץ "Commit new file"
-חכה 2-3 דקות
-נסה את הלינק: https://drorsisrael.github.io/parking-dashboard/
-עכשיו זה אמור לעבוד מצוין עם כל הנתונים מהטבלה שלך! 🚀
-
-תגיד לי אם אתה צריך עזרה ביצירת הקובץ ב-GitHub!
-
-
-
-
-למה כאן יש שגיאת חיבור ?
-
-Edit
-אני רואה שיש שגיאת חיבור בארטיפקט (במסך הדוגמה כאן). זה קורה כי:
-
-הסיבה לשגיאה:
-הארטיפקט כאן לא יכול להתחבר לאינטרנט - זה רק דוגמה לקוד, לא אתר אמיתי.
-
-מה שצריך לעשות:
-1. יצור את הקובץ ב-GitHub (זה החשוב!)
-בגיטהאב שלך:
-
-כנס ל: https://github.com/drorsisrael/parking-dashboard
-לחץ "Add file" > "Create new file"
-כתוב index.html
-העתק את הקוד מהארטיפקט למעלה
-שמור
-2. בדוק את האתר האמיתי
-אחרי שתשמור ב-GitHub, בדוק: https://drorsisrael.github.io/parking-dashboard/
-
-שם זה אמור לעבוד!
-
-למה כאן יש שגיאה ושם יעבוד?
-כאן (בארטיפקט): אין חיבור אינטרנט ➜ שגיאה
-באתר האמיתי: יש חיבור מלא ➜ יעבוד מצוין
-תיצור את הקובץ ב-GitHub ואז תבדוק את האתר האמיתי! 🎯
-
-האם אתה צריך עזרה ביצירת הקובץ ב-GitHub?
-
-
-
-
-https://drorsisrael.github.io/parking-dashboard/ עדיין 404
-
-Edit
-הבעיה היא שאין קובץ index.html בפרויקט שלך ב-GitHub. בואו ניצור אותו יחד:
-
-שלב 1: כנס ל-GitHub
-פתח את הלינק הזה: https://github.com/drorsisrael/parking-dashboard
-
-שלב 2: יצירת קובץ index.html
-לחץ על הכפתור הירוק "Add file"
-בחר "Create new file"
-בשדה שם הקובץ כתוב: index.html
-שלב 3: העתק את הקוד
-העתק את כל הקוד הזה לקובץ החדש:
-
-html
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -531,800 +33,6 @@ html
             font-size: 20px;
             font-weight: bold;
             color: #2c3e50;
-        }
-
-        .datetime {
-            font-size: 16px;
-            color: #2c3e50;
-            font-weight: 500;
-        }
-
-        .main-container {
-            padding: 10px;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            height: calc(100vh - 65px);
-        }
-
-        .column {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-        }
-
-        .column-header {
-            text-align: center;
-            padding: 10px;
-            margin-bottom: 12px;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        }
-
-        .tasks-header {
-            background: linear-gradient(135deg, #6f42c1, #8e44ad);
-        }
-
-        .projects-header {
-            background: linear-gradient(135deg, #28a745, #20c997);
-        }
-
-        .supply-header {
-            background: linear-gradient(135deg, #ffc107, #fd7e14);
-        }
-
-        .item {
-            margin-bottom: 8px;
-            padding: 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            position: relative;
-            font-size: 13px;
-        }
-
-        .item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        }
-
-        .priority-1 {
-            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
-            border-left: 4px solid #dc3545;
-        }
-
-        .priority-2 {
-            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-            border-left: 4px solid #ffc107;
-        }
-
-        .priority-3 {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-left: 4px solid #6c757d;
-        }
-
-        .priority-0 {
-            background: linear-gradient(135deg, #cce7ff, #b3daff);
-            border-left: 4px solid #007bff;
-        }
-
-        .item-title {
-            font-weight: bold;
-            margin-bottom: 4px;
-            font-size: 13px;
-            line-height: 1.2;
-        }
-
-        .item-description {
-            font-size: 11px;
-            color: #666;
-            line-height: 1.3;
-        }
-
-        .tooltip {
-            position: absolute;
-            background: rgba(0,0,0,0.9);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 1000;
-            max-width: 200px;
-            top: -50px;
-            right: 0;
-        }
-
-        .item:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .priority-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .priority-1 .priority-badge {
-            background: #dc3545;
-        }
-
-        .priority-2 .priority-badge {
-            background: #ffc107;
-        }
-
-        .priority-3 .priority-badge {
-            background: #6c757d;
-        }
-
-        .priority-0 .priority-badge {
-            background: #007bff;
-        }
-
-        .refresh-indicator {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 12px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .refresh-indicator.show {
-            opacity: 1;
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .refresh-btn {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 500;
-        }
-
-        .refresh-btn:hover {
-            background: linear-gradient(135deg, #0056b3, #004085);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,123,255,0.3);
-        }
-
-        .refresh-btn:active {
-            transform: translateY(0);
-        }
-
-        .status-indicator {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        .status-connected {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        @media (max-width: 768px) {
-            .main-container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 15px;
-            }
-            
-            .header {
-                padding: 10px 15px;
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .logo {
-                font-size: 20px;
-            }
-            
-            .datetime {
-                font-size: 16px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="refresh-indicator" id="refreshIndicator">
-        מעדכן נתונים...
-    </div>
-
-    <header class="header">
-        <div class="datetime" id="datetime"></div>
-        <div class="logo">
-            SCHEIDT&BACHMANN - ניהול פרויקטים
-        </div>
-        <div class="header-controls">
-            <div class="status-indicator" id="statusIndicator">מתחבר...</div>
-            <button id="refreshBtn" class="refresh-btn">🔄 רענן</button>
-        </div>
-    </header>
-
-    <div class="main-container">
-        <div class="column">
-            <div class="column-header tasks-header">
-                משימות שוטפות
-            </div>
-            <div id="tasks-list"></div>
-        </div>
-
-        <div class="column">
-            <div class="column-header projects-header">
-                פרויקטים
-            </div>
-            <div id="projects-list"></div>
-        </div>
-
-        <div class="column">
-            <div class="column-header supply-header">
-                אספקת ציוד
-            </div>
-            <div id="supply-list"></div>
-        </div>
-    </div>
-
-    <script>
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFSEtvMev-XTMkdUAzTpXduWkqqC7FYHUIjmb2XXUZQF9N3mAAfkbcPRj8yNfShUXOFQ/exec';
-        let currentData = [];
-
-        function updateDateTime() {
-            const now = new Date();
-            const options = {
-                timeZone: 'Asia/Jerusalem',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            };
-            
-            const israelTime = now.toLocaleString('he-IL', options);
-            document.getElementById('datetime').textContent = israelTime;
-        }
-
-        function createItem(data) {
-            const item = document.createElement('div');
-            item.className = `item priority-${data.priority}`;
-            
-            item.innerHTML = `
-                <div class="priority-badge"></div>
-                <div class="item-title">${data.title}</div>
-                <div class="item-description">${data.description}</div>
-                <div class="tooltip">ציוד נדרש: ${data.equipment}</div>
-            `;
-            
-            return item;
-        }
-
-        function updateStatus(status, message) {
-            const indicator = document.getElementById('statusIndicator');
-            indicator.className = `status-indicator status-${status}`;
-            indicator.textContent = message;
-        }
-
-        async function fetchFromGoogleSheets() {
-            try {
-                updateStatus('connecting', 'מתחבר...');
-                
-                const response = await fetch(GOOGLE_SCRIPT_URL);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-                
-                updateStatus('connected', 'מחובר ✓');
-                return data;
-                
-            } catch (error) {
-                console.error('שגיאה בקריאה מ-Google Sheets:', error);
-                updateStatus('error', 'שגיאה בחיבור');
-                return [];
-            }
-        }
-
-        async function loadData() {
-            currentData = await fetchFromGoogleSheets();
-
-            document.getElementById('projects-list').innerHTML = '';
-            document.getElementById('supply-list').innerHTML = '';
-            document.getElementById('tasks-list').innerHTML = '';
-
-            if (currentData.length === 0) {
-                return;
-            }
-
-            const sortedData = currentData.sort((a, b) => {
-                if (a.priority === 0) return 1;
-                if (b.priority === 0) return -1;
-                return a.priority - b.priority;
-            });
-
-            sortedData.forEach(data => {
-                const item = createItem(data);
-                const listId = data.column + '-list';
-                const list = document.getElementById(listId);
-                if (list) {
-                    list.appendChild(item);
-                }
-            });
-        }
-
-        function showRefreshIndicator() {
-            const indicator = document.getElementById('refreshIndicator');
-            indicator.classList.add('show');
-            setTimeout(() => {
-                indicator.classList.remove('show');
-            }, 2000);
-        }
-
-        async function refreshData() {
-            showRefreshIndicator();
-            await loadData();
-        }
-
-        async function initialize() {
-            updateDateTime();
-            await loadData();
-            
-            document.getElementById('refreshBtn').addEventListener('click', refreshData);
-            setInterval(updateDateTime, 1000);
-            setInterval(refreshData, 3 * 60 * 1000);
-        }
-
-        document.addEventListener('DOMContentLoaded', initialize);
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
-                e.preventDefault();
-                refreshData();
-            }
-        });
-    </script>
-</body>
-</html>
-שלב 4: שמור
-גלול למטה ולחץ "Commit new file"
-חכה 2-3 דקות
-בדוק שוב: https://drorsisrael.github.io/parking-dashboard/
-עכשיו זה אמור לעבוד! תגיד לי מה קורה! 🚀
-
-
-
-
-image.png
-שלב 1 https://github.com/drorsisrael/parking-dashboard
-
-Edit
-אני רואה שאתה ב-GitHub. עכשיו בואו ניצור את הקובץ index.html:
-
-שלב 2: יצירת קובץ חדש
-מה אתה רואה במסך?
-
-רשימת קבצים?
-כפתור ירוק "Code"?
-כפתור "Add file"?
-אם אתה רואה כפתור "Add file":
-
-לחץ על "Add file"
-בחר "Create new file"
-אם אתה לא רואה "Add file":
-
-תוכל לשלוח לי צילום מסך של מה שאתה רואה?
-אלטרנטיבה: צור קובץ ישירות
-אם אין כפתור "Add file", נסה את זה:
-
-לחץ על הקישור הזה: https://github.com/drorsisrael/parking-dashboard/new/main
-זה יפתח לך מסך ליצירת קובץ חדש
-תגיד לי מה אתה רואה במסך שלך עכשיו! 👀
-
-אני אעזור לך להמשיך לפי מה שמופיע אצלך.
-
-
-
-
-image.png
-Edit
-מעולה! 🎉 אני רואה שיש לך כבר קובץ index.html בפרויקט!
-
-אני רואה ש: ✅ יש קובץ index.html (נוצר לפני דקה)
-✅ GitHub Pages פעיל (בצד ימין רואים "github-pages" פעיל מלפני 4 שעות)
-✅ הפרויקט מכיל HTML (100% HTML בגרף השפות)
-
-הבעיה: תוכן הקובץ
-הקובץ קיים, אבל צריך לבדוק מה בתוכנו.
-
-מה לעשות עכשיו:
-
-לחץ על הקובץ index.html (השורה הראשונה ברשימה)
-בדוק מה יש בתוכן הקובץ
-אם הקובץ ריק או לא מכיל את הקוד שלנו - נערוך אותו
-לחץ על index.html ותגיד לי מה אתה רואה בתוכן הקובץ! 👀
-
-אם הקובץ ריק או מכיל תוכן שונה, נחליף אותו בקוד הנכון.
-
-
-
-
-
-<!DOCTYPE html> <html lang="he" dir="rtl"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>מסך ניהול פרויקטים - בקרת חניונים</title> <style> * { margin: 0; padding: 0; box-sizing:
-
-pasted
-
-Edit
-מעולה! 🎉 הקוד נראה מושלם!
-
-אני רואה שהקובץ index.html מכיל את כל הקוד הנכון עם: ✅ ה-URL הנכון של Google Apps Script
-✅ כל הסטיילים והפונקציות
-✅ חיבור לטבלת Google Sheets
-
-בעיה אפשרית: זמן עיבוד GitHub Pages
-GitHub Pages צריך זמן לעבד את השינויים.
-
-מה לעשות עכשיו:
-
-שלב 1: חכה 5-10 דקות
-GitHub Pages צריך זמן לעבד את הקובץ החדש.
-
-שלב 2: נסה לרענן עם Cache Clear
-פתח: https://drorsisrael.github.io/parking-dashboard/
-לחץ Ctrl+F5 (או Cmd+Shift+R במק) - זה מרענן ומנקה cache
-אם עדיין 404, חכה עוד 5 דקות ונסה שוב
-שלב 3: בדוק ש-GitHub Pages פעיל
-חזור ל-GitHub
-לחץ Settings
-גלול ל-Pages
-וודא שכתוב: "Your site is published at..."
-GitHub Pages יכול לקחת עד 10 דקות לעדכון מלא.
-
-נסה את הלינק עוד 5 דקות ותגיד לי מה קורה! ⏰
-
-אם עדיין לא עובד, נבדוק את הגדרות GitHub Pages.
-
-
-
-
-image.png
-Edit
-אהה! מצאתי את הבעיה! 🎯
-
-GitHub Pages כרגע מכובה!
-
-אני רואה שכתוב: "GitHub Pages is currently disabled"
-
-פתרון מהיר:
-שלב 1: הפעל GitHub Pages
-תחת "Source" לחץ על "Deploy from a branch" (הכפתור הכחול)
-בחר "main" בתפריט הנפתח
-לחץ "Save"
-שלב 2: חכה לאישור
-אחרי שתשמור, תראה הודעה כמו: "Your site is published at https://drorsisrael.github.io/parking-dashboard/"
-
-עכשיו בצע את השלבים האלה ותגיד לי מה קורה אחרי שלחצת "Save"!
-
-זה אמור לתקן את הבעיה מיד! 🚀
-
-
-
-
-image.png
-Edit
-מעולה! 🎉 GitHub Pages כבר פעיל!
-
-אני רואה שכתוב: "Your GitHub Pages site is currently being built from the main branch"
-
-זה אומר שהאתר כבר נבנה!
-
-עכשיו בואו נבדוק:
-שלב 1: חכה דקה אחת
-GitHub עדיין מעבד את הקובץ החדש.
-
-שלב 2: בדוק את האתר
-נסה את הלינק: https://drorsisrael.github.io/parking-dashboard/
-
-שלב 3: אם עדיין 404 - רענן עם Cache Clear
-לחץ Ctrl+F5 (או Cmd+Shift+R במק)
-
-מה אמור לקרות:
-אתה אמור לראות:
-
-מסך עם 3 טורים צבעוניים
-שעה ותאריך בעברית
-כותרת "SCHEIDT&BACHMANN - ניהול פרויקטים"
-נתונים מהטבלה שלך (משימות, פרויקטים, אספקת ציוד)
-סטטוס "מחובר ✓" בפינה
-נסה עכשיו את הלינק ותגיד לי מה אתה רואה! 🚀
-
-אם זה עובד - נצחנו! 🏆
-
-
-
-
-איך אני בונה Render ? לדף אולי שם נראה את הבעיה
-
-Edit
-לא צריך Render! 💡
-
-GitHub Pages זה בדיוק מה שאנחנו צריכים - זה שירות חינמי של GitHub לאירוח אתרי HTML.
-
-הבעיה והפתרון:
-אם האתר עדיין לא עובד - יש 2 אפשרויות:
-1. עדיין נטען (יקח עוד 2-3 דקות) 2. בעיה קטנה בקוד או הגדרות
-
-בואו נבדוק משהו פשוט:
-שלב 1: בדוק אם GitHub Pages בונה את האתר
-חזור ל-GitHub לפרויקט שלך ובדוק:
-
-האם יש נקודה ירוקה ✅ ליד "main" בראש הדף?
-או נקודה כתומה 🟡 (אומר שעדיין בונה)?
-שלב 2: נסה לגשת ישירות לקובץ
-נסה את הלינק הזה: https://drorsisrael.github.io/parking-dashboard/index.html
-
-(עם index.html בסוף)
-
-Render זה מיותר כי:
-GitHub Pages חינמי וקל יותר
-כבר הגדרנו אותו
-התוכן מתאים למה שאנחנו רוצים
-תנסה את השלבים שכתבתי ותגיד לי מה קורה! 🔍
-
-אם גם זה לא עובד, יש לי עוד רעיון לתקן את זה.
-
-
-
-
-image.png
-Edit
-מעולה! אני רואה שהפרויקט מוגדר כ-Public עם קובץ HTML 🎯
-
-עכשיו הכל אמור לעבוד!
-
-בואו נבדוק את האתר:
-בדוק את הלינקים האלה לפי הסדר:
-הלינק הראשי: https://drorsisrael.github.io/parking-dashboard/
-אם זה לא עובד, נסה עם index.html: https://drorsisrael.github.io/parking-dashboard/index.html
-רענן עם Cache Clear: לחץ Ctrl+F5 (או Cmd+Shift+R במק)
-מה אתה אמור לראות:
-✅ מסך עם 3 טורים צבעוניים
-✅ השעה והתאריך בעברית
-✅ כותרת "SCHEIDT&BACHMANN - ניהול פרויקטים"
-✅ הנתונים מהטבלה שלך
-✅ סטטוס "מחובר ✓" או "שגיאה בחיבור"
-
-נסה עכשיו את הלינקים ותגיד לי בדיוק מה אתה רואה!
-
-אם זה עובד - סיימנו בהצלחה! 🏆
-אם לא - אני אעזור לך לתקן את זה! 🔧
-
-
-
-
-לא עובד ,
-
-Edit
-בסדר, בואו נפתור את זה צעד אחר צעד! 🔧
-
-בדיקות מהירות:
-שלב 1: וודא שהקובץ index.html באמת קיים
-חזור ל-GitHub לפרויקט שלך:
-
-כנס ל: https://github.com/drorsisrael/parking-dashboard
-האם אתה רואה את הקובץ index.html ברשימת הקבצים?
-לחץ על index.html ובדוק שיש בו תוכן (לא ריק)
-שלב 2: בדוק GitHub Actions
-באותו מסך ב-GitHub:
-
-חפש טאב "Actions" (ליד Code, Issues, Pull requests)
-לחץ עליו ובדוק אם יש שגיאות אדומות
-שלב 3: אלטרנטיבה מהירה - נסה דרך RAW
-נסה את הלינק הזה: https://raw.githubusercontent.com/drorsisrael/parking-dashboard/main/index.html
-
-זה אמור להראות את הקוד הגולמי.
-
-אם כלום לא עובד - ניצור מחדש:
-תוכל לענות לי על השאלות האלה:
-
-האם אתה רואה קובץ index.html ברשימת הקבצים?
-מה קורה כשאתה נכנס ל-Actions?
-האם הלינק RAW עובד?
-על פי התשובות שלך אני אדע איך לתקן את זה! 💪
-
-
-
-
-שלב 1 כבר מקוב 404
-
-Edit
-הבנתי את הבעיה! 🎯
-
-הפתרון: ניצור את האתר מהתחלה בצורה נכונה
-GitHub Pages לא מזהה את הקובץ שלך.
-
-שלב 1: מחק את הקובץ הנוכחי
-ב-GitHub:
-
-לחץ על קובץ index.html
-לחץ על סמל פח האשפה 🗑️ (בפינה ימנית)
-אשר את המחיקה
-שלב 2: צור קובץ חדש בצורה נכונה
-ב-GitHub:
-
-לחץ "Add file" > "Create new file"
-כתוב בדיוק: index.html
-הדבק את הקוד המלא (אתן לך אותו עכשיו)
-
-דף בדיקה פשוט לGitHub
-Interactive artifact 
-שלב 3: בדיקה ראשונית
-העתק את הקוד הפשוט הזה ↑ לקובץ החדש:
-
-הדבק את הקוד
-לחץ "Commit new file"
-חכה 2 דקות
-בדוק: https://drorsisrael.github.io/parking-dashboard/
-אם אתה רואה "האתר עובד!" - אז GitHub Pages עובד ונעלה את הקוד המלא.
-
-אם עדיין 404 - יש בעיה בהגדרות GitHub Pages.
-
-תעשה את זה ותגיד לי מה קורה! 🚀
-
-
-
-
-יופי זה עובד והחזרתי את הקוד המלא, עכשיו שיפורים , 1 מצרף את הלוגו המלא ולא רק השם Scheidt ' , 2 השעון תזיז ל ליד המלל ניהול פרויקטים , 3 תיקון קל בפריורטי 1 בירוק ו 0 בכחול בתחתית הרשימה
-
-Edit
-יופי! 🎉 עכשיו נשפר את המסך. בואו נעשה את השיפורים הללו:
-
-
-לוח בקרה - קוד סופי עובד
-Interactive artifact ∙ Version 2 
-
-לוח בקרה - קוד סופי עובד
-Interactive artifact ∙ Version 3 
-
-לוח בקרה - קוד סופי עובד
-Interactive artifact ∙ Version 4 
-
-לוח בקרה - קוד סופי עובד
-Interactive artifact ∙ Version 5 
-
-לוח בקרה - קוד סופי עובד
-Interactive artifact ∙ Version 6 
-
-לוח בקרה - קוד סופי עובד
-Interactive artifact ∙ Version 7 
-מעולה! ✨ השיפורים שביצעתי:
-
-מה שתוקן:
-1. לוגו מלא של Scheidt & Bachmann 🏢
-הוספתי את הלוגו האמיתי מהאתר הרסמי
-מבנה יפה עם שם החברה ו"ניהול פרויקטים"
-2. שעון ליד הטקסט ⏰
-השעה עכשיו ליד שם המערכת
-מיקום נעים ומסודר
-3. תיקון עדיפויות 🎯
-עדיפות 1: עכשיו בירוק (דחוף)
-עדיפות 0: בכחול ובתחתית הרשימה
-סדר נכון: 1, 2, 3... ואז 0 בסוף
-עכשיו:
-העתק את הקוד המעודכן ↑ ל-GitHub והחלף את הקובץ index.html
-
-התוצאה תהיה: ✅ לוגו מקצועי
-✅ פריסה מסודרת
-✅ עדיפויות נכונות
-✅ מסך יפה ומקצועי
-
-תעדכן את הקוד ותגיד לי איך זה נראה! 🚀
-
-
-
-
-
-לא זה פתוח טוב 
-
-
-<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מסך ניהול פרויקטים - בקרת חניונים</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 8px 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-image {
-            height: 50px;
-            width: auto;
-        }
-
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .company-name {
-            font-size: 16px;
-            font-weight: bold;
-            color: #2c3e50;
-            line-height: 1;
-        }
-
-        .system-name {
-            font-size: 14px;
-            color: #666;
-            line-height: 1;
         }
 
         .datetime {
@@ -1545,26 +253,12 @@ Interactive artifact ∙ Version 7
                 gap: 10px;
             }
             
-            .logo-section {
-                flex-direction: column;
-                gap: 5px;
-                text-align: center;
-            }
-            
-            .logo-image {
-                height: 40px;
-            }
-            
-            .company-name {
-                font-size: 16px;
-            }
-            
-            .system-name {
-                font-size: 12px;
+            .logo {
+                font-size: 20px;
             }
             
             .datetime {
-                font-size: 14px;
+                font-size: 16px;
             }
         }
     </style>
@@ -1575,14 +269,9 @@ Interactive artifact ∙ Version 7
     </div>
 
     <header class="header">
-        <div class="logo-section">
-            <img src="https://www.scheidt-bachmann.com/typo3conf/ext/sitepackage/Resources/Public/Images/logo.svg" 
-                 alt="Scheidt & Bachmann" class="logo-image">
-            <div class="logo-text">
-                <div class="company-name">SCHEIDT & BACHMANN</div>
-                <div class="system-name">ניהול פרויקטים</div>
-            </div>
-            <div class="datetime" id="datetime"></div>
+        <div class="datetime" id="datetime"></div>
+        <div class="logo">
+            SCHEIDT&BACHMANN - ניהול פרויקטים
         </div>
         <div class="header-controls">
             <div class="status-indicator" id="statusIndicator">מתחבר...</div>
@@ -1591,44 +280,32 @@ Interactive artifact ∙ Version 7
     </header>
 
     <div class="main-container">
-        <!-- עמודת משימות שוטפות -->
         <div class="column">
             <div class="column-header tasks-header">
                 משימות שוטפות
             </div>
-            <div id="tasks-list">
-                <!-- פריטים יתווספו כאן דינמית -->
-            </div>
+            <div id="tasks-list"></div>
         </div>
 
-        <!-- עמודת פרויקטים -->
         <div class="column">
             <div class="column-header projects-header">
                 פרויקטים
             </div>
-            <div id="projects-list">
-                <!-- פריטים יתווספו כאן דינמית -->
-            </div>
+            <div id="projects-list"></div>
         </div>
 
-        <!-- עמודת אספקת ציוד -->
         <div class="column">
             <div class="column-header supply-header">
                 אספקת ציוד
             </div>
-            <div id="supply-list">
-                <!-- פריטים יתווספו כאן דינמית -->
-            </div>
+            <div id="supply-list"></div>
         </div>
     </div>
 
     <script>
-        // כתובת ה-Web App של Google Apps Script - עם ה-URL שלך שעובד!
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFSEtvMev-XTMkdUAzTpXduWkqqC7FYHUIjmb2XXUZQF9N3mAAfkbcPRj8yNfShUXOFQ/exec';
-        
         let currentData = [];
 
-        // פונקציה לעדכון השעה והתאריך
         function updateDateTime() {
             const now = new Date();
             const options = {
@@ -1645,7 +322,6 @@ Interactive artifact ∙ Version 7
             document.getElementById('datetime').textContent = israelTime;
         }
 
-        // פונקציה ליצירת פריט ברשימה
         function createItem(data) {
             const item = document.createElement('div');
             item.className = `item priority-${data.priority}`;
@@ -1660,18 +336,15 @@ Interactive artifact ∙ Version 7
             return item;
         }
 
-        // פונקציה לעדכון סטטוס החיבור
         function updateStatus(status, message) {
             const indicator = document.getElementById('statusIndicator');
             indicator.className = `status-indicator status-${status}`;
             indicator.textContent = message;
         }
 
-        // פונקציה לקריאה מ-Google Sheets
         async function fetchFromGoogleSheets() {
             try {
                 updateStatus('connecting', 'מתחבר...');
-                console.log('מתחבר ל-Google Apps Script:', GOOGLE_SCRIPT_URL);
                 
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 
@@ -1680,40 +353,29 @@ Interactive artifact ∙ Version 7
                 }
                 
                 const data = await response.json();
-                console.log('נתונים התקבלו:', data);
                 
                 if (data.error) {
                     throw new Error(data.error);
                 }
                 
                 updateStatus('connected', 'מחובר ✓');
-                console.log('נתונים התקבלו מ-Google Sheets:', data.length, 'פריטים');
-                
                 return data;
                 
             } catch (error) {
                 console.error('שגיאה בקריאה מ-Google Sheets:', error);
                 updateStatus('error', 'שגיאה בחיבור');
-                
-                // החזר רשימה ריקה במקרה של שגיאה
                 return [];
             }
         }
 
-        // פונקציה לעדכון הנתונים
         async function loadData() {
-            console.log('טוען נתונים...');
-            
-            // קרא נתונים מ-Google Sheets
             currentData = await fetchFromGoogleSheets();
 
-            // נקה הרשימות
             document.getElementById('projects-list').innerHTML = '';
             document.getElementById('supply-list').innerHTML = '';
             document.getElementById('tasks-list').innerHTML = '';
 
             if (currentData.length === 0) {
-                console.log('אין נתונים זמינים');
                 return;
             }
 
@@ -1728,7 +390,6 @@ Interactive artifact ∙ Version 7
                 return a.priority - b.priority;
             });
 
-            // הוסף הפריטים לעמודות
             sortedData.forEach(data => {
                 const item = createItem(data);
                 const listId = data.column + '-list';
@@ -1737,11 +398,8 @@ Interactive artifact ∙ Version 7
                     list.appendChild(item);
                 }
             });
-            
-            console.log('נתונים נטענו בהצלחה:', currentData.length, 'פריטים');
         }
 
-        // פונקציה להצגת אינדיקטור עדכון
         function showRefreshIndicator() {
             const indicator = document.getElementById('refreshIndicator');
             indicator.classList.add('show');
@@ -1750,36 +408,24 @@ Interactive artifact ∙ Version 7
             }, 2000);
         }
 
-        // פונקציה לעדכון
         async function refreshData() {
             showRefreshIndicator();
             await loadData();
         }
 
-        // אתחול הדף
         async function initialize() {
-            console.log('מאתחל את המסך...');
             updateDateTime();
             await loadData();
             
-            // כפתור רענון
             document.getElementById('refreshBtn').addEventListener('click', refreshData);
-            
-            // עדכון השעה כל שנייה
             setInterval(updateDateTime, 1000);
-            
-            // עדכון נתונים כל 3 דקות
             setInterval(refreshData, 3 * 60 * 1000);
-            
-            console.log('המסך מוכן!');
         }
 
-        // הפעלה בעת טעינת הדף
         document.addEventListener('DOMContentLoaded', initialize);
 
-        // רענון ידני
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r') {
                 e.preventDefault();
                 refreshData();
             }
