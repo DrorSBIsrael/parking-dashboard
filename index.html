@@ -114,8 +114,8 @@
         }
 
         .priority-0 {
-            background: linear-gradient(135deg, #cce7ff, #b3daff);
-            border-left: 4px solid #007bff;
+            background: linear-gradient(135deg, #e1d5f7, #d1c4e9);
+            border-left: 4px solid #9c27b0;
         }
 
         .item-title {
@@ -174,7 +174,7 @@
         }
 
         .priority-0 .priority-badge {
-            background: #007bff;
+            background: #9c27b0;
         }
 
         .refresh-indicator {
@@ -376,7 +376,7 @@
     </div>
 
     <div class="auto-refresh-info" id="autoRefreshInfo">
-        רענון אוטומטי בעוד: <span id="countdown">3:00</span>
+        רענון אוטומטי בעוד: <span id="countdown">0:30</span>
     </div>
 
     <header class="header">
@@ -419,7 +419,7 @@
         let currentData = [];
         let countdownTimer;
         let refreshInterval;
-        let timeLeft = 180; // 3 דקות בשניות
+        let timeLeft = 30; // 30 שניות
 
         // פונקציה לבדיקת הסיסמה
         function checkPassword() {
@@ -569,9 +569,9 @@
                 countdownElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
             }
             
-            // הצג את החיווי כשנשארו פחות מ-30 שניות
+            // הצג את החיווי כשנשארו פחות מ-10 שניות
             const infoElement = document.getElementById('autoRefreshInfo');
-            if (timeLeft <= 30 && infoElement) {
+            if (timeLeft <= 10 && infoElement) {
                 infoElement.classList.add('show');
             } else if (infoElement) {
                 infoElement.classList.remove('show');
@@ -580,7 +580,7 @@
             timeLeft--;
             
             if (timeLeft < 0) {
-                timeLeft = 180; // איפוס ל-3 דקות
+                timeLeft = 30; // איפוס ל-30 שניות
                 refreshData();
             }
         }
@@ -602,7 +602,7 @@
             await loadData();
             
             document.getElementById('refreshBtn').addEventListener('click', () => {
-                timeLeft = 180; // איפוס הספירה אחרי רענון ידני
+                timeLeft = 30; // איפוס הספירה אחרי רענון ידני
                 refreshData();
             });
             
