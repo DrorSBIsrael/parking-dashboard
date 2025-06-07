@@ -415,9 +415,9 @@
                 
                 // יצירת תג script לJSONP
                 const script = document.createElement('script');
-                const sheetId = '1vRl8w2iwqWSJaTmGC90rtUk6wxZva2znvgYAd5viogIRiOR0d0DnLg-EukU44bUnFY9s3QOYs691oYA';
+                const sheetId = '1-UC1uXQBtxnGF2pPAzj0xMRzlK3oAOeNwDkFqcJrATc';
                 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json;responseHandler:${callbackName}&gid=0`;
-                
+
                 script.src = url;
                 script.onerror = () => {
                     console.error('שגיאה בטעינת הסקריפט');
