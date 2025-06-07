@@ -587,6 +587,19 @@
                 return a.priority - b.priority;
             });
 
+            // תמיד הוסף פריט בדיקה לעדיפות 0 (גם עם חיבור)
+            const hasZeroPriority = sortedData.some(item => item.priority === 0);
+            if (!hasZeroPriority) {
+                sortedData.push({
+                    column: 'tasks',
+                    title: '🟣 דוגמה - עדיפות 0 (סגול)',
+                    description: 'משימות שוטפות',
+                    priority: 0,
+                    equipment: 'פריט דוגמה לעדיפות 0'
+                });
+                console.log('הוספתי פריט דוגמה עם עדיפות 0');
+            }
+
             console.log('נתונים ממוינים:', sortedData); // בדיקה
             console.log('פריטים עם עדיפות 0:', sortedData.filter(item => item.priority === 0)); // בדיקה מיוחדת
 
