@@ -543,8 +543,39 @@
             document.getElementById('supply-list').innerHTML = '';
             document.getElementById('tasks-list').innerHTML = '';
 
+            // אם אין נתונים - הוסף פריטי בדיקה
             if (currentData.length === 0) {
-                return;
+                console.log('אין נתונים - מוסיף פריטי בדיקה');
+                currentData = [
+                    {
+                        column: 'tasks',
+                        title: '🟢 בדיקה - עדיפות 1 (ירוק)',
+                        description: 'משימות שוטפות',
+                        priority: 1,
+                        equipment: 'בדיקה'
+                    },
+                    {
+                        column: 'tasks',
+                        title: '🟡 בדיקה - עדיפות 2 (צהוב)',
+                        description: 'משימות שוטפות',
+                        priority: 2,
+                        equipment: 'בדיקה'
+                    },
+                    {
+                        column: 'tasks',
+                        title: '⚫ בדיקה - עדיפות 3 (אפור)',
+                        description: 'משימות שוטפות',
+                        priority: 3,
+                        equipment: 'בדיקה'
+                    },
+                    {
+                        column: 'tasks',
+                        title: '🟣 בדיקה - עדיפות 0 (סגול)',
+                        description: 'משימות שוטפות',
+                        priority: 0,
+                        equipment: 'בדיקה סגול'
+                    }
+                ];
             }
 
             // סדר הנתונים לפי עדיפות - עדיפות 0 בתחתית
