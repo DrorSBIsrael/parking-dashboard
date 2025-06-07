@@ -312,7 +312,7 @@
     </div>
 
     <script>
-        // כתובת ה-Web App של Google Apps Script - עם ה-URL שקיבלת
+        // כתובת ה-Web App של Google Apps Script - עם ה-URL שלך שעובד!
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFSEtvMev-XTMkdUAzTpXduWkqqC7FYHUIjmb2XXUZQF9N3mAAfkbcPRj8yNfShUXOFQ/exec';
         
         let currentData = [];
@@ -360,6 +360,7 @@
         async function fetchFromGoogleSheets() {
             try {
                 updateStatus('connecting', 'מתחבר...');
+                console.log('מתחבר ל-Google Apps Script:', GOOGLE_SCRIPT_URL);
                 
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 
@@ -368,6 +369,7 @@
                 }
                 
                 const data = await response.json();
+                console.log('נתונים התקבלו:', data);
                 
                 if (data.error) {
                     throw new Error(data.error);
@@ -382,37 +384,8 @@
                 console.error('שגיאה בקריאה מ-Google Sheets:', error);
                 updateStatus('error', 'שגיאה בחיבור');
                 
-                // החזר נתונים לדוגמה במקרה של שגיאה
-                return [
-                    {
-                        column: 'tasks',
-                        title: 'ליב העיר שלג - הפעלה חזופה',
-                        description: 'משימות שוטפות',
-                        priority: 1,
-                        equipment: 'תוכנה'
-                    },
-                    {
-                        column: 'tasks',
-                        title: 'פינקס ראשון - 4 יחידות להחליף פנל סורק בפאנל אשראי',
-                        description: 'משימות שוטפות',
-                        priority: 1,
-                        equipment: 'תמונה כושפת'
-                    },
-                    {
-                        column: 'projects',
-                        title: 'אחוזת שינר - ירושלים - 11/05',
-                        description: 'פרויקטים',
-                        priority: 1,
-                        equipment: 'מחברים'
-                    },
-                    {
-                        column: 'supply',
-                        title: 'לח K 100 - חניות ים',
-                        description: 'אספקת ציוד',
-                        priority: 1,
-                        equipment: 'כרטיסים'
-                    }
-                ];
+                // החזר רשימה ריקה במקרה של שגיאה
+                return [];
             }
         }
 
@@ -427,6 +400,11 @@
             document.getElementById('projects-list').innerHTML = '';
             document.getElementById('supply-list').innerHTML = '';
             document.getElementById('tasks-list').innerHTML = '';
+
+            if (currentData.length === 0) {
+                console.log('אין נתונים זמינים');
+                return;
+            }
 
             // סדר הנתונים לפי עדיפות
             const sortedData = currentData.sort((a, b) => {
@@ -445,7 +423,7 @@
                 }
             });
             
-            console.log('נתונים נטענו בהצלחה');
+            console.log('נתונים נטענו בהצלחה:', currentData.length, 'פריטים');
         }
 
         // פונקציה להצגת אינדיקטור עדכון
