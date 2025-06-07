@@ -99,8 +99,8 @@
         }
 
         .priority-1 {
-            background: linear-gradient(135deg, #d4edda, #c3e6cb);
-            border-left: 4px solid #28a745;
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            border-left: 4px solid #dc3545;
         }
 
         .priority-2 {
@@ -162,7 +162,7 @@
         }
 
         .priority-1 .priority-badge {
-            background: #28a745;
+            background: #dc3545;
         }
 
         .priority-2 .priority-badge {
@@ -223,6 +223,23 @@
             transform: translateY(0);
         }
 
+        .status-indicator {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .status-connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
         @media (max-width: 768px) {
             .main-container {
                 grid-template-columns: 1fr;
@@ -257,15 +274,16 @@
             SCHEIDT&BACHMANN - ניהול פרויקטים
         </div>
         <div class="header-controls">
-            <button id="refreshBtn" class="refresh-btn">🔄 עדכן</button>
+            <div class="status-indicator" id="statusIndicator">מתחבר...</div>
+            <button id="refreshBtn" class="refresh-btn">🔄 רענן</button>
         </div>
     </header>
 
     <div class="main-container">
-        <!-- עמודת משימות שונות -->
+        <!-- עמודת משימות שוטפות -->
         <div class="column">
             <div class="column-header tasks-header">
-                משימות שונות
+                משימות שוטפות
             </div>
             <div id="tasks-list">
                 <!-- פריטים יתווספו כאן דינמית -->
@@ -294,7 +312,9 @@
     </div>
 
     <script>
-        // נתונים
+        // כתובת ה-Web App של Google Apps Script - החלף את זה ב-URL שקיבלת
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+        
         let currentData = [];
 
         // פונקציה לעדכון השעה והתאריך
@@ -329,328 +349,72 @@
             return item;
         }
 
-        // פונקציה לקריאה מ-Google Sheets באמצעות JSONP
-        function fetchFromGoogleSheets() {
-            return new Promise((resolve, reject) => {
-                const callbackName = `googleCallback_${Date.now()}`;
-                
-                // יצירת פונקציית callback גלובלית
-                window[callbackName] = function(response) {
-                    try {
-                        console.log('Response מ-Google:', response);
-                        const data = [];
-                        
-                        if (response.table && response.table.rows) {
-                            const rows = response.table.rows;
-                            console.log('מספר שורות:', rows.length);
-                            
-                            // מדלג על שורת הכותרות
-                            for (let i = 1; i < rows.length; i++) {
-                                const row = rows[i];
-                                const cells = row.c || [];
-                                
-                                // עמודה A (0) - משימות שונות
-                                if (cells[0] && cells[0].v) {
-                                    const title = String(cells[0].v).trim();
-                                    if (title) {
-                                        data.push({
-                                            column: 'tasks',
-                                            title: title,
-                                            description: 'משימות שונות',
-                                            priority: (cells[1] && cells[1].v) ? parseInt(cells[1].v) : 3,
-                                            equipment: (cells[2] && cells[2].v) ? String(cells[2].v).trim() : 'לא צוין'
-                                        });
-                                    }
-                                }
-                                
-                                // עמודה D (3) - פרויקטים
-                                if (cells[3] && cells[3].v) {
-                                    const title = String(cells[3].v).trim();
-                                    if (title) {
-                                        data.push({
-                                            column: 'projects',
-                                            title: title,
-                                            description: 'פרויקטים',
-                                            priority: (cells[4] && cells[4].v) ? parseInt(cells[4].v) : 3,
-                                            equipment: (cells[5] && cells[5].v) ? String(cells[5].v).trim() : 'לא צוין'
-                                        });
-                                    }
-                                }
-                                
-                                // עמודה G (6) - אספקת ציוד
-                                if (cells[6] && cells[6].v) {
-                                    const title = String(cells[6].v).trim();
-                                    if (title) {
-                                        data.push({
-                                            column: 'supply',
-                                            title: title,
-                                            description: 'אספקת ציוד',
-                                            priority: (cells[7] && cells[7].v) ? parseInt(cells[7].v) : 3,
-                                            equipment: (cells[8] && cells[8].v) ? String(cells[8].v).trim() : 'לא צוין'
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                        
-                        console.log('נטענו מGoogle Sheets:', data.length, 'פריטים');
-                        
-                        // ניקוי
-                        if (script && script.parentNode) {
-                            script.parentNode.removeChild(script);
-                        }
-                        delete window[callbackName];
-                        
-                        resolve(data);
-                        
-                    } catch (error) {
-                        console.error('שגיאה בעיבוד נתונים מGoogle:', error);
-                        if (script && script.parentNode) {
-                            script.parentNode.removeChild(script);
-                        }
-                        delete window[callbackName];
-                        resolve([]); // החזר מערך ריק במקום שגיאה
-                    }
-                };
-                
-                // יצירת תג script לJSONP
-                const script = document.createElement('script');
-                const sheetId = '1-UC1uXQBtxnGF2pPAzj0xMRzlK3oAOeNwDkFqcJrATc';
-                const url = `https://script.google.com/macros/s/AKfycbxv3Tw4ImCxCGFEKA33Np1DLxq9J_JGUP4wLjnPl6miogdcNFoqpqOY0D4obmjXfzVgUg/exec`;
-
-                script.src = url;
-                script.onerror = () => {
-                    console.error('שגיאה בטעינת הסקריפט');
-                    if (script && script.parentNode) {
-                        script.parentNode.removeChild(script);
-                    }
-                    delete window[callbackName];
-                    resolve([]); // החזר מערך ריק במקום שגיאה
-                };
-                
-                // timeout אחרי 10 שניות
-                setTimeout(() => {
-                    if (script && script.parentNode) {
-                        console.log('Timeout - מבטל קריאה');
-                        script.parentNode.removeChild(script);
-                        delete window[callbackName];
-                        resolve([]); // החזר מערך ריק במקום שגיאה
-                    }
-                }, 10000);
-                
-                document.head.appendChild(script);
-            });
+        // פונקציה לעדכון סטטוס החיבור
+        function updateStatus(status, message) {
+            const indicator = document.getElementById('statusIndicator');
+            indicator.className = `status-indicator status-${status}`;
+            indicator.textContent = message;
         }
 
-        // פונקציה לטעינת נתונים
+        // פונקציה לקריאה מ-Google Sheets
+        async function fetchFromGoogleSheets() {
+            try {
+                updateStatus('connecting', 'מתחבר...');
+                
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                updateStatus('connected', 'מחובר ✓');
+                console.log('נתונים התקבלו מ-Google Sheets:', data.length, 'פריטים');
+                
+                return data;
+                
+            } catch (error) {
+                console.error('שגיאה בקריאה מ-Google Sheets:', error);
+                updateStatus('error', 'שגיאה בחיבור');
+                
+                // החזר נתונים לדוגמה במקרה של שגיאה
+                return [
+                    {
+                        column: 'tasks',
+                        title: 'לא ניתן לטעון נתונים מ-Google Sheets',
+                        description: 'בדוק את החיבור',
+                        priority: 1,
+                        equipment: 'תיקון נדרש'
+                    }
+                ];
+            }
+        }
+
+        // פונקציה לעדכון הנתונים
         async function loadData() {
             console.log('טוען נתונים...');
             
-            // נסה לקרוא מGoogle Sheets
-            const googleData = await fetchFromGoogleSheets();
-            
-            // אם יש נתונים מGoogle, השתמש בהם. אחרת, השתמש בנתוני גיבוי
-            currentData = googleData.length > 0 ? googleData : [
-                // נתוני גיבוי
-                {
-                    column: 'tasks',
-                    title: 'לב העיר שלג - הפעלה דחופה',
-                    description: 'משימות שונות',
-                    priority: 1,
-                    equipment: 'תוכנה'
-                },
-                {
-                    column: 'tasks',
-                    title: 'פינקס ראשון - 4 יחידות להחליף פנל סורק בפאנל אשראי',
-                    description: 'משימות שונות',
-                    priority: 1,
-                    equipment: 'תמונה כושפת'
-                },
-                {
-                    column: 'tasks',
-                    title: 'על בנוסטר דזינגוף - חריצת לוולה יחידה 111',
-                    description: 'משימות שונות',
-                    priority: 2,
-                    equipment: 'קטע'
-                },
-                {
-                    column: 'tasks',
-                    title: 'ביג גלילות - SSL',
-                    description: 'משימות שונות',
-                    priority: 2,
-                    equipment: 'צביות 2 מטומנות + מצלמה + חידת קדח קטן - החיבורים'
-                },
-                {
-                    column: 'tasks',
-                    title: 'בית ולקטור הדרכה - שי לקחם בין נ - 10/06-12/06',
-                    description: 'משימות שונות',
-                    priority: 3,
-                    equipment: 'X2 פנל סטר תחרות - תדרוך לוחה'
-                },
-                {
-                    column: 'tasks',
-                    title: 'עורליר בעטרת - 2 מטומנות',
-                    description: 'משימות שונות',
-                    priority: 6,
-                    equipment: 'ציוד מיוחד'
-                },
-                // פרויקטים
-                {
-                    column: 'projects',
-                    title: 'אחוזת שטנר - ירושלים - 11/05',
-                    description: 'פרויקטים',
-                    priority: 1,
-                    equipment: 'מחברים'
-                },
-                {
-                    column: 'projects',
-                    title: 'דזינגוף עליון - מצלמות',
-                    description: 'פרויקטים',
-                    priority: 1,
-                    equipment: 'מצלמות'
-                },
-                {
-                    column: 'projects',
-                    title: 'מגדל המוזיקה - 60 לבן + 20 צהוב',
-                    description: 'פרויקטים',
-                    priority: 4,
-                    equipment: 'מרכזית'
-                },
-                {
-                    column: 'projects',
-                    title: 'מדיעין - תוספת נדף חגיגי לשעה',
-                    description: 'פרויקטים',
-                    priority: 5,
-                    equipment: 'ציוד'
-                },
-                {
-                    column: 'projects',
-                    title: 'עזריאלי - דיתר מזון רקות (יש אישור)',
-                    description: 'פרויקטים',
-                    priority: 6,
-                    equipment: '4 לוכמות ויציאות'
-                },
-                {
-                    column: 'projects',
-                    title: 'מנבח - א.ת - שירות חנייה',
-                    description: 'פרויקטים',
-                    priority: 7,
-                    equipment: 'ציוד חנייה'
-                },
-                {
-                    column: 'projects',
-                    title: 'מנבח - תפוסלים',
-                    description: 'פרויקטים',
-                    priority: 8,
-                    equipment: 'ציוד בסיסי'
-                },
-                {
-                    column: 'projects',
-                    title: 'מנבח - שיר הנביאטפון מזין',
-                    description: 'פרויקטים',
-                    priority: 3,
-                    equipment: 'ציוד מיוחד'
-                },
-                {
-                    column: 'projects',
-                    title: 'שרונה מרקם - יחידת מנט + מצלמות + התקנת 2 מסומנים',
-                    description: 'פרויקטים',
-                    priority: 0,
-                    equipment: 'כלי עבודה'
-                },
-                {
-                    column: 'projects',
-                    title: 'שיירי חזרה',
-                    description: 'פרויקטים',
-                    priority: 9,
-                    equipment: 'ציוד מיוחד'
-                },
-                {
-                    column: 'projects',
-                    title: 'מגסון ביוזד',
-                    description: 'פרויקטים',
-                    priority: 2,
-                    equipment: 'ציוד מיוחד'
-                },
-                {
-                    column: 'projects',
-                    title: 'מצלא טורס',
-                    description: 'פרויקטים',
-                    priority: 10,
-                    equipment: 'מצלמות'
-                },
-                {
-                    column: 'projects',
-                    title: 'אפליל רחובות',
-                    description: 'פרויקטים',
-                    priority: 11,
-                    equipment: 'אפליקציה'
-                },
-                {
-                    column: 'projects',
-                    title: 'מגדל איילון',
-                    description: 'פרויקטים',
-                    priority: 12,
-                    equipment: 'מערכת חנייה'
-                },
-                {
-                    column: 'projects',
-                    title: 'מגדל המאה - התקנת ציוד',
-                    description: 'פרויקטים',
-                    priority: 13,
-                    equipment: 'ציוד התקנה'
-                },
-                // אספקת ציוד
-                {
-                    column: 'supply',
-                    title: 'לח K 100 - חנויות ים',
-                    description: 'אספקת ציוד',
-                    priority: 1,
-                    equipment: 'כרטיסים'
-                },
-                {
-                    column: 'supply',
-                    title: 'לח K 100 - בית השכרת',
-                    description: 'אספקת ציוד',
-                    priority: 1,
-                    equipment: 'כרטיסים'
-                },
-                {
-                    column: 'supply',
-                    title: 'מגדל המוזיקה - 60 לבן + 20 צהוב',
-                    description: 'אספקת ציוד',
-                    priority: 2,
-                    equipment: 'כרטיסים'
-                },
-                {
-                    column: 'supply',
-                    title: 'לכב - איזור צמי - אירופונטיקה - 20',
-                    description: 'אספקת ציוד',
-                    priority: 4,
-                    equipment: 'כרטיסים'
-                },
-                {
-                    column: 'supply',
-                    title: 'לכנס לאמיני חשוח - 120',
-                    description: 'אספקת ציוד',
-                    priority: 0,
-                    equipment: 'כרטיסים'
-                }
-            ];
+            // קרא נתונים מ-Google Sheets
+            currentData = await fetchFromGoogleSheets();
 
-            // ניקוי הרשימות
+            // נקה הרשימות
             document.getElementById('projects-list').innerHTML = '';
             document.getElementById('supply-list').innerHTML = '';
             document.getElementById('tasks-list').innerHTML = '';
 
-            // סידור הנתונים לפי עדיפות
+            // סדר הנתונים לפי עדיפות
             const sortedData = currentData.sort((a, b) => {
                 if (a.priority === 0) return 1;
                 if (b.priority === 0) return -1;
                 return a.priority - b.priority;
             });
 
-            // הוספת הפריטים לעמודות
+            // הוסף הפריטים לעמודות
             sortedData.forEach(data => {
                 const item = createItem(data);
                 const listId = data.column + '-list';
@@ -696,7 +460,7 @@
             console.log('המסך מוכן!');
         }
 
-        // הפעלה בטעינת הדף
+        // הפעלה בעת טעינת הדף
         document.addEventListener('DOMContentLoaded', initialize);
 
         // רענון ידני
