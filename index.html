@@ -381,12 +381,9 @@
 
             // סדר הנתונים לפי עדיפות - עדיפות 0 בתחתית
             const sortedData = currentData.sort((a, b) => {
-                // עדיפות 0 תמיד בסוף
                 if (a.priority === 0 && b.priority !== 0) return 1;
                 if (b.priority === 0 && a.priority !== 0) return -1;
                 if (a.priority === 0 && b.priority === 0) return 0;
-                
-                // יתר העדיפויות לפי מספר (1, 2, 3...)
                 return a.priority - b.priority;
             });
 
@@ -425,7 +422,7 @@
         document.addEventListener('DOMContentLoaded', initialize);
 
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r') {
+            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
                 e.preventDefault();
                 refreshData();
             }
