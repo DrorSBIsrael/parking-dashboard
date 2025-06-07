@@ -1,12 +1,430 @@
 <!DOCTYPE html>
-<html>
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>בדיקת אתר</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מסך ניהול פרויקטים - בקרת חניונים</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            height: 40px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .datetime {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .main-container {
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            height: calc(100vh - 65px);
+        }
+
+        .column {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .column-header {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .tasks-header {
+            background: linear-gradient(135deg, #6f42c1, #8e44ad);
+        }
+
+        .projects-header {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        .supply-header {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+        }
+
+        .item {
+            margin-bottom: 8px;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: relative;
+            font-size: 13px;
+        }
+
+        .item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .priority-1 {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            border-left: 4px solid #dc3545;
+        }
+
+        .priority-2 {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-left: 4px solid #ffc107;
+        }
+
+        .priority-3 {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-left: 4px solid #6c757d;
+        }
+
+        .priority-0 {
+            background: linear-gradient(135deg, #cce7ff, #b3daff);
+            border-left: 4px solid #007bff;
+        }
+
+        .item-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 13px;
+            line-height: 1.2;
+        }
+
+        .item-description {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+            max-width: 200px;
+            top: -50px;
+            right: 0;
+        }
+
+        .item:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .priority-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .priority-1 .priority-badge {
+            background: #dc3545;
+        }
+
+        .priority-2 .priority-badge {
+            background: #ffc107;
+        }
+
+        .priority-3 .priority-badge {
+            background: #6c757d;
+        }
+
+        .priority-0 .priority-badge {
+            background: #007bff;
+        }
+
+        .refresh-indicator {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .refresh-indicator.show {
+            opacity: 1;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .refresh-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #004085);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,123,255,0.3);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        .status-indicator {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .status-connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 10px 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .datetime {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>האתר עובד!</h1>
-    <p>אם אתה רואה את זה - GitHub Pages עובד</p>
-    <p>עכשיו נעלה את הקוד המלא</p>
+    <div class="refresh-indicator" id="refreshIndicator">
+        מעדכן נתונים...
+    </div>
+
+    <header class="header">
+        <div class="datetime" id="datetime"></div>
+        <div class="logo">
+            SCHEIDT&BACHMANN - ניהול פרויקטים
+        </div>
+        <div class="header-controls">
+            <div class="status-indicator" id="statusIndicator">מתחבר...</div>
+            <button id="refreshBtn" class="refresh-btn">🔄 רענן</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="column">
+            <div class="column-header tasks-header">
+                משימות שוטפות
+            </div>
+            <div id="tasks-list"></div>
+        </div>
+
+        <div class="column">
+            <div class="column-header projects-header">
+                פרויקטים
+            </div>
+            <div id="projects-list"></div>
+        </div>
+
+        <div class="column">
+            <div class="column-header supply-header">
+                אספקת ציוד
+            </div>
+            <div id="supply-list"></div>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFSEtvMev-XTMkdUAzTpXduWkqqC7FYHUIjmb2XXUZQF9N3mAAfkbcPRj8yNfShUXOFQ/exec';
+        let currentData = [];
+
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                timeZone: 'Asia/Jerusalem',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            
+            const israelTime = now.toLocaleString('he-IL', options);
+            document.getElementById('datetime').textContent = israelTime;
+        }
+
+        function createItem(data) {
+            const item = document.createElement('div');
+            item.className = `item priority-${data.priority}`;
+            
+            item.innerHTML = `
+                <div class="priority-badge"></div>
+                <div class="item-title">${data.title}</div>
+                <div class="item-description">${data.description}</div>
+                <div class="tooltip">ציוד נדרש: ${data.equipment}</div>
+            `;
+            
+            return item;
+        }
+
+        function updateStatus(status, message) {
+            const indicator = document.getElementById('statusIndicator');
+            indicator.className = `status-indicator status-${status}`;
+            indicator.textContent = message;
+        }
+
+        async function fetchFromGoogleSheets() {
+            try {
+                updateStatus('connecting', 'מתחבר...');
+                
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                updateStatus('connected', 'מחובר ✓');
+                return data;
+                
+            } catch (error) {
+                console.error('שגיאה בקריאה מ-Google Sheets:', error);
+                updateStatus('error', 'שגיאה בחיבור');
+                return [];
+            }
+        }
+
+        async function loadData() {
+            currentData = await fetchFromGoogleSheets();
+
+            document.getElementById('projects-list').innerHTML = '';
+            document.getElementById('supply-list').innerHTML = '';
+            document.getElementById('tasks-list').innerHTML = '';
+
+            if (currentData.length === 0) {
+                return;
+            }
+
+            const sortedData = currentData.sort((a, b) => {
+                if (a.priority === 0) return 1;
+                if (b.priority === 0) return -1;
+                return a.priority - b.priority;
+            });
+
+            sortedData.forEach(data => {
+                const item = createItem(data);
+                const listId = data.column + '-list';
+                const list = document.getElementById(listId);
+                if (list) {
+                    list.appendChild(item);
+                }
+            });
+        }
+
+        function showRefreshIndicator() {
+            const indicator = document.getElementById('refreshIndicator');
+            indicator.classList.add('show');
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 2000);
+        }
+
+        async function refreshData() {
+            showRefreshIndicator();
+            await loadData();
+        }
+
+        async function initialize() {
+            updateDateTime();
+            await loadData();
+            
+            document.getElementById('refreshBtn').addEventListener('click', refreshData);
+            setInterval(updateDateTime, 1000);
+            setInterval(refreshData, 3 * 60 * 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', initialize);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+                e.preventDefault();
+                refreshData();
+            }
+        });
+    </script>
 </body>
 </html>
