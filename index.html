@@ -447,6 +447,8 @@
             const item = document.createElement('div');
             item.className = `item priority-${data.priority}`;
             
+            console.log('יוצר פריט עם עדיפות:', data.priority, 'עבור:', data.title); // בדיקה
+            
             item.innerHTML = `
                 <div class="priority-badge"></div>
                 <div class="item-title">${data.title}</div>
@@ -502,11 +504,15 @@
 
             // סדר הנתונים לפי עדיפות - עדיפות 0 בתחתית
             const sortedData = currentData.sort((a, b) => {
+                // בדיקה מיוחדת לעדיפות 0
                 if (a.priority === 0 && b.priority !== 0) return 1;
                 if (b.priority === 0 && a.priority !== 0) return -1;
                 if (a.priority === 0 && b.priority === 0) return 0;
                 return a.priority - b.priority;
             });
+
+            console.log('נתונים ממוינים:', sortedData); // בדיקה
+            console.log('פריטים עם עדיפות 0:', sortedData.filter(item => item.priority === 0)); // בדיקה מיוחדת
 
             sortedData.forEach(data => {
                 const item = createItem(data);
