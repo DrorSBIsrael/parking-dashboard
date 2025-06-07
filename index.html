@@ -280,44 +280,32 @@
     </header>
 
     <div class="main-container">
-        <!-- עמודת משימות שוטפות -->
         <div class="column">
             <div class="column-header tasks-header">
                 משימות שוטפות
             </div>
-            <div id="tasks-list">
-                <!-- פריטים יתווספו כאן דינמית -->
-            </div>
+            <div id="tasks-list"></div>
         </div>
 
-        <!-- עמודת פרויקטים -->
         <div class="column">
             <div class="column-header projects-header">
                 פרויקטים
             </div>
-            <div id="projects-list">
-                <!-- פריטים יתווספו כאן דינמית -->
-            </div>
+            <div id="projects-list"></div>
         </div>
 
-        <!-- עמודת אספקת ציוד -->
         <div class="column">
             <div class="column-header supply-header">
                 אספקת ציוד
             </div>
-            <div id="supply-list">
-                <!-- פריטים יתווספו כאן דינמית -->
-            </div>
+            <div id="supply-list"></div>
         </div>
     </div>
 
     <script>
-        // כתובת ה-Web App של Google Apps Script - עם ה-URL שלך שעובד!
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFSEtvMev-XTMkdUAzTpXduWkqqC7FYHUIjmb2XXUZQF9N3mAAfkbcPRj8yNfShUXOFQ/exec';
-        
         let currentData = [];
 
-        // פונקציה לעדכון השעה והתאריך
         function updateDateTime() {
             const now = new Date();
             const options = {
@@ -334,7 +322,6 @@
             document.getElementById('datetime').textContent = israelTime;
         }
 
-        // פונקציה ליצירת פריט ברשימה
         function createItem(data) {
             const item = document.createElement('div');
             item.className = `item priority-${data.priority}`;
@@ -349,18 +336,15 @@
             return item;
         }
 
-        // פונקציה לעדכון סטטוס החיבור
         function updateStatus(status, message) {
             const indicator = document.getElementById('statusIndicator');
             indicator.className = `status-indicator status-${status}`;
             indicator.textContent = message;
         }
 
-        // פונקציה לקריאה מ-Google Sheets
         async function fetchFromGoogleSheets() {
             try {
                 updateStatus('connecting', 'מתחבר...');
-                console.log('מתחבר ל-Google Apps Script:', GOOGLE_SCRIPT_URL);
                 
                 const response = await fetch(GOOGLE_SCRIPT_URL);
                 
@@ -369,51 +353,38 @@
                 }
                 
                 const data = await response.json();
-                console.log('נתונים התקבלו:', data);
                 
                 if (data.error) {
                     throw new Error(data.error);
                 }
                 
                 updateStatus('connected', 'מחובר ✓');
-                console.log('נתונים התקבלו מ-Google Sheets:', data.length, 'פריטים');
-                
                 return data;
                 
             } catch (error) {
                 console.error('שגיאה בקריאה מ-Google Sheets:', error);
                 updateStatus('error', 'שגיאה בחיבור');
-                
-                // החזר רשימה ריקה במקרה של שגיאה
                 return [];
             }
         }
 
-        // פונקציה לעדכון הנתונים
         async function loadData() {
-            console.log('טוען נתונים...');
-            
-            // קרא נתונים מ-Google Sheets
             currentData = await fetchFromGoogleSheets();
 
-            // נקה הרשימות
             document.getElementById('projects-list').innerHTML = '';
             document.getElementById('supply-list').innerHTML = '';
             document.getElementById('tasks-list').innerHTML = '';
 
             if (currentData.length === 0) {
-                console.log('אין נתונים זמינים');
                 return;
             }
 
-            // סדר הנתונים לפי עדיפות
             const sortedData = currentData.sort((a, b) => {
                 if (a.priority === 0) return 1;
                 if (b.priority === 0) return -1;
                 return a.priority - b.priority;
             });
 
-            // הוסף הפריטים לעמודות
             sortedData.forEach(data => {
                 const item = createItem(data);
                 const listId = data.column + '-list';
@@ -422,11 +393,8 @@
                     list.appendChild(item);
                 }
             });
-            
-            console.log('נתונים נטענו בהצלחה:', currentData.length, 'פריטים');
         }
 
-        // פונקציה להצגת אינדיקטור עדכון
         function showRefreshIndicator() {
             const indicator = document.getElementById('refreshIndicator');
             indicator.classList.add('show');
@@ -435,34 +403,22 @@
             }, 2000);
         }
 
-        // פונקציה לעדכון
         async function refreshData() {
             showRefreshIndicator();
             await loadData();
         }
 
-        // אתחול הדף
         async function initialize() {
-            console.log('מאתחל את המסך...');
             updateDateTime();
             await loadData();
             
-            // כפתור רענון
             document.getElementById('refreshBtn').addEventListener('click', refreshData);
-            
-            // עדכון השעה כל שנייה
             setInterval(updateDateTime, 1000);
-            
-            // עדכון נתונים כל 3 דקות
             setInterval(refreshData, 3 * 60 * 1000);
-            
-            console.log('המסך מוכן!');
         }
 
-        // הפעלה בעת טעינת הדף
         document.addEventListener('DOMContentLoaded', initialize);
 
-        // רענון ידני
         document.addEventListener('keydown', function(e) {
             if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
                 e.preventDefault();
