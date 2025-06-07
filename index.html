@@ -114,8 +114,9 @@
         }
 
         .priority-0 {
-            background: linear-gradient(135deg, #e1d5f7, #d1c4e9);
-            border-left: 4px solid #9c27b0;
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7) !important;
+            border-left: 4px solid #9c27b0 !important;
+            border: 2px solid #9c27b0 !important;
         }
 
         .item-title {
@@ -174,7 +175,9 @@
         }
 
         .priority-0 .priority-badge {
-            background: #9c27b0;
+            background: #9c27b0 !important;
+            width: 12px !important;
+            height: 12px !important;
         }
 
         .refresh-indicator {
@@ -472,15 +475,30 @@
 
         function createItem(data) {
             const item = document.createElement('div');
-            item.className = `item priority-${data.priority}`;
             
-            console.log('יוצר פריט עם עדיפות:', data.priority, 'עבור:', data.title); // בדיקה
+            // וודא שעדיפות 0 נקראת נכון
+            let priority = data.priority;
+            if (priority === '0' || priority === 0 || priority === null || priority === undefined || priority === '') {
+                priority = 0;
+            }
+            
+            item.className = `item priority-${priority}`;
+            
+            console.log('יוצר פריט עם עדיפות:', priority, 'מקורי:', data.priority, 'עבור:', data.title);
+            
+            // הוסף סטייל ישיר לעדיפות 0
+            if (priority === 0) {
+                item.style.background = 'linear-gradient(135deg, #f3e5f5, #e1bee7)';
+                item.style.borderLeft = '4px solid #9c27b0';
+                item.style.border = '2px solid #9c27b0';
+                console.log('הוחל סטייל סגול לפריט:', data.title);
+            }
             
             item.innerHTML = `
                 <div class="priority-badge"></div>
                 <div class="item-title">${data.title}</div>
                 <div class="item-description">${data.description}</div>
-                <div class="tooltip">ציוד נדרש: ${data.equipment}</div>
+                <div class="tooltip">ציוד נדרש: ${data.equipment} | עדיפות: ${priority}</div>
             `;
             
             return item;
