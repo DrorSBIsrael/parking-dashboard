@@ -113,7 +113,7 @@
             border-left: 4px solid #6c757d;
         }
 
-        .priority-0 {
+        .priority-99 {
             background: linear-gradient(135deg, #f3e5f5, #e1bee7) !important;
             border-left: 4px solid #9c27b0 !important;
             border: 2px solid #9c27b0 !important;
@@ -174,7 +174,7 @@
             background: #6c757d;
         }
 
-        .priority-0 .priority-badge {
+        .priority-99 .priority-badge {
             background: #9c27b0 !important;
             width: 12px !important;
             height: 12px !important;
@@ -476,18 +476,18 @@
         function createItem(data) {
             const item = document.createElement('div');
             
-            // וודא שעדיפות 0 נקראת נכון
+            // וודא שעדיפות 99 נקראת נכון
             let priority = data.priority;
-            if (priority === '0' || priority === 0 || priority === null || priority === undefined || priority === '') {
-                priority = 0;
+            if (priority === '99' || priority === 99) {
+                priority = 99;
             }
             
             item.className = `item priority-${priority}`;
             
             console.log('יוצר פריט עם עדיפות:', priority, 'מקורי:', data.priority, 'עבור:', data.title);
             
-            // הוסף סטייל ישיר לעדיפות 0
-            if (priority === 0) {
+            // הוסף סטייל ישיר לעדיפות 99
+            if (priority === 99) {
                 item.style.background = 'linear-gradient(135deg, #f3e5f5, #e1bee7)';
                 item.style.borderLeft = '4px solid #9c27b0';
                 item.style.border = '2px solid #9c27b0';
@@ -570,38 +570,38 @@
                     },
                     {
                         column: 'tasks',
-                        title: '🟣 בדיקה - עדיפות 0 (סגול)',
+                        title: '🟣 בדיקה - עדיפות 99 (סגול)',
                         description: 'משימות שוטפות',
-                        priority: 0,
+                        priority: 99,
                         equipment: 'בדיקה סגול'
                     }
                 ];
             } else {
                 console.log('יש חיבור - מציג נתונים מהשרת');
-                // אם יש נתונים אבל אין עדיפות 0, הוסף דוגמה אחת
-                const hasZeroPriority = currentData.some(item => item.priority === 0);
-                if (!hasZeroPriority) {
+                // אם יש נתונים אבל אין עדיפות 99, הוסף דוגמה אחת
+                const hasNinetyNinePriority = currentData.some(item => item.priority === 99);
+                if (!hasNinetyNinePriority) {
                     currentData.push({
                         column: 'tasks',
-                        title: '🟣 דוגמה - עדיפות 0',
+                        title: '🟣 דוגמה - עדיפות 99',
                         description: 'משימות שוטפות',
-                        priority: 0,
+                        priority: 99,
                         equipment: 'דוגמה לעדיפות נמוכה'
                     });
-                    console.log('הוספתי פריט דוגמה עם עדיפות 0');
+                    console.log('הוספתי פריט דוגמה עם עדיפות 99');
                 }
             }
 
-            // סדר הנתונים לפי עדיפות - עדיפות 0 בתחתית
+            // סדר הנתונים לפי עדיפות - עדיפות 99 בתחתית
             const sortedData = currentData.sort((a, b) => {
-                if (a.priority === 0 && b.priority !== 0) return 1;
-                if (b.priority === 0 && a.priority !== 0) return -1;
-                if (a.priority === 0 && b.priority === 0) return 0;
+                if (a.priority === 99 && b.priority !== 99) return 1;
+                if (b.priority === 99 && a.priority !== 99) return -1;
+                if (a.priority === 99 && b.priority === 99) return 0;
                 return a.priority - b.priority;
             });
 
             console.log('נתונים ממוינים:', sortedData);
-            console.log('פריטים עם עדיפות 0:', sortedData.filter(item => item.priority === 0));
+            console.log('פריטים עם עדיפות 99:', sortedData.filter(item => item.priority === 99));
 
             sortedData.forEach(data => {
                 const item = createItem(data);
