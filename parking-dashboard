@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מסך ניהול פרויקטים - בקרת חניונים</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            height: 40px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .datetime {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .main-container {
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            height: calc(100vh - 65px);
+        }
+
+        .column {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .column-header {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .tasks-header {
+            background: linear-gradient(135deg, #6f42c1, #8e44ad);
+        }
+
+        .projects-header {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        .supply-header {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+        }
+
+        .item {
+            margin-bottom: 8px;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: relative;
+            font-size: 13px;
+        }
+
+        .item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .priority-1 {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            border-left: 4px solid #28a745;
+        }
+
+        .priority-2 {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-left: 4px solid #ffc107;
+        }
+
+        .priority-3 {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-left: 4px solid #6c757d;
+        }
+
+        .priority-0 {
+            background: linear-gradient(135deg, #cce7ff, #b3daff);
+            border-left: 4px solid #007bff;
+        }
+
+        .item-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 13px;
+            line-height: 1.2;
+        }
+
+        .item-description {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+            max-width: 200px;
+            top: -50px;
+            right: 0;
+        }
+
+        .item:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .priority-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .priority-1 .priority-badge {
+            background: #28a745;
+        }
+
+        .priority-2 .priority-badge {
+            background: #ffc107;
+        }
+
+        .priority-3 .priority-badge {
+            background: #6c757d;
+        }
+
+        .priority-0 .priority-badge {
+            background: #007bff;
+        }
+
+        .refresh-indicator {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .refresh-indicator.show {
+            opacity: 1;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .refresh-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #004085);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,123,255,0.3);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 10px 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .datetime {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="refresh-indicator" id="refreshIndicator">
+        מעדכן נתונים...
+    </div>
+
+    <header class="header">
+        <div class="datetime" id="datetime"></div>
+        <div class="logo">
+            SCHEIDT&BACHMANN - ניהול פרויקטים
+        </div>
+        <div class="header-controls">
+            <button id="refreshBtn" class="refresh-btn">🔄 עדכן</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- עמודת משימות שונות -->
+        <div class="column">
+            <div class="column-header tasks-header">
+                משימות שונות
+            </div>
+            <div id="tasks-list">
+                <!-- פריטים יתווספו כאן דינמית -->
+            </div>
+        </div>
+
+        <!-- עמודת פרויקטים -->
+        <div class="column">
+            <div class="column-header projects-header">
+                פרויקטים
+            </div>
+            <div id="projects-list">
+                <!-- פריטים יתווספו כאן דינמית -->
+            </div>
+        </div>
+
+        <!-- עמודת אספקת ציוד -->
+        <div class="column">
+            <div class="column-header supply-header">
+                אספקת ציוד
+            </div>
+            <div id="supply-list">
+                <!-- פריטים יתווספו כאן דינמית -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // נתונים
+        let currentData = [];
+
+        // פונקציה לעדכון השעה והתאריך
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                timeZone: 'Asia/Jerusalem',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            
+            const israelTime = now.toLocaleString('he-IL', options);
+            document.getElementById('datetime').textContent = israelTime;
+        }
+
+        // פונקציה ליצירת פריט ברשימה
+        function createItem(data) {
+            const item = document.createElement('div');
+            item.className = `item priority-${data.priority}`;
+            
+            item.innerHTML = `
+                <div class="priority-badge"></div>
+                <div class="item-title">${data.title}</div>
+                <div class="item-description">${data.description}</div>
+                <div class="tooltip">ציוד נדרש: ${data.equipment}</div>
+            `;
+            
+            return item;
+        }
+
+        // פונקציה לקריאה מ-Google Sheets באמצעות JSONP
+        function fetchFromGoogleSheets() {
+            return new Promise((resolve, reject) => {
+                const callbackName = `googleCallback_${Date.now()}`;
+                
+                // יצירת פונקציית callback גלובלית
+                window[callbackName] = function(response) {
+                    try {
+                        console.log('Response מ-Google:', response);
+                        const data = [];
+                        
+                        if (response.table && response.table.rows) {
+                            const rows = response.table.rows;
+                            console.log('מספר שורות:', rows.length);
+                            
+                            // מדלג על שורת הכותרות
+                            for (let i = 1; i < rows.length; i++) {
+                                const row = rows[i];
+                                const cells = row.c || [];
+                                
+                                // עמודה A (0) - משימות שונות
+                                if (cells[0] && cells[0].v) {
+                                    const title = String(cells[0].v).trim();
+                                    if (title) {
+                                        data.push({
+                                            column: 'tasks',
+                                            title: title,
+                                            description: 'משימות שונות',
+                                            priority: (cells[1] && cells[1].v) ? parseInt(cells[1].v) : 3,
+                                            equipment: (cells[2] && cells[2].v) ? String(cells[2].v).trim() : 'לא צוין'
+                                        });
+                                    }
+                                }
+                                
+                                // עמודה D (3) - פרויקטים
+                                if (cells[3] && cells[3].v) {
+                                    const title = String(cells[3].v).trim();
+                                    if (title) {
+                                        data.push({
+                                            column: 'projects',
+                                            title: title,
+                                            description: 'פרויקטים',
+                                            priority: (cells[4] && cells[4].v) ? parseInt(cells[4].v) : 3,
+                                            equipment: (cells[5] && cells[5].v) ? String(cells[5].v).trim() : 'לא צוין'
+                                        });
+                                    }
+                                }
+                                
+                                // עמודה G (6) - אספקת ציוד
+                                if (cells[6] && cells[6].v) {
+                                    const title = String(cells[6].v).trim();
+                                    if (title) {
+                                        data.push({
+                                            column: 'supply',
+                                            title: title,
+                                            description: 'אספקת ציוד',
+                                            priority: (cells[7] && cells[7].v) ? parseInt(cells[7].v) : 3,
+                                            equipment: (cells[8] && cells[8].v) ? String(cells[8].v).trim() : 'לא צוין'
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                        
+                        console.log('נטענו מGoogle Sheets:', data.length, 'פריטים');
+                        
+                        // ניקוי
+                        if (script && script.parentNode) {
+                            script.parentNode.removeChild(script);
+                        }
+                        delete window[callbackName];
+                        
+                        resolve(data);
+                        
+                    } catch (error) {
+                        console.error('שגיאה בעיבוד נתונים מGoogle:', error);
+                        if (script && script.parentNode) {
+                            script.parentNode.removeChild(script);
+                        }
+                        delete window[callbackName];
+                        resolve([]); // החזר מערך ריק במקום שגיאה
+                    }
+                };
+                
+                // יצירת תג script לJSONP
+                const script = document.createElement('script');
+                const sheetId = '1vRl8w2iwqWSJaTmGC90rtUk6wxZva2znvgYAd5viogIRiOR0d0DnLg-EukU44bUnFY9s3QOYs691oYA';
+                const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json;responseHandler:${callbackName}&gid=0`;
+                
+                script.src = url;
+                script.onerror = () => {
+                    console.error('שגיאה בטעינת הסקריפט');
+                    if (script && script.parentNode) {
+                        script.parentNode.removeChild(script);
+                    }
+                    delete window[callbackName];
+                    resolve([]); // החזר מערך ריק במקום שגיאה
+                };
+                
+                // timeout אחרי 10 שניות
+                setTimeout(() => {
+                    if (script && script.parentNode) {
+                        console.log('Timeout - מבטל קריאה');
+                        script.parentNode.removeChild(script);
+                        delete window[callbackName];
+                        resolve([]); // החזר מערך ריק במקום שגיאה
+                    }
+                }, 10000);
+                
+                document.head.appendChild(script);
+            });
+        }
+
+        // פונקציה לטעינת נתונים
+        async function loadData() {
+            console.log('טוען נתונים...');
+            
+            // נסה לקרוא מGoogle Sheets
+            const googleData = await fetchFromGoogleSheets();
+            
+            // אם יש נתונים מGoogle, השתמש בהם. אחרת, השתמש בנתוני גיבוי
+            currentData = googleData.length > 0 ? googleData : [
+                // נתוני גיבוי
+                {
+                    column: 'tasks',
+                    title: 'לב העיר שלג - הפעלה דחופה',
+                    description: 'משימות שונות',
+                    priority: 1,
+                    equipment: 'תוכנה'
+                },
+                {
+                    column: 'tasks',
+                    title: 'פינקס ראשון - 4 יחידות להחליף פנל סורק בפאנל אשראי',
+                    description: 'משימות שונות',
+                    priority: 1,
+                    equipment: 'תמונה כושפת'
+                },
+                {
+                    column: 'tasks',
+                    title: 'על בנוסטר דזינגוף - חריצת לוולה יחידה 111',
+                    description: 'משימות שונות',
+                    priority: 2,
+                    equipment: 'קטע'
+                },
+                {
+                    column: 'tasks',
+                    title: 'ביג גלילות - SSL',
+                    description: 'משימות שונות',
+                    priority: 2,
+                    equipment: 'צביות 2 מטומנות + מצלמה + חידת קדח קטן - החיבורים'
+                },
+                {
+                    column: 'tasks',
+                    title: 'בית ולקטור הדרכה - שי לקחם בין נ - 10/06-12/06',
+                    description: 'משימות שונות',
+                    priority: 3,
+                    equipment: 'X2 פנל סטר תחרות - תדרוך לוחה'
+                },
+                {
+                    column: 'tasks',
+                    title: 'עורליר בעטרת - 2 מטומנות',
+                    description: 'משימות שונות',
+                    priority: 6,
+                    equipment: 'ציוד מיוחד'
+                },
+                // פרויקטים
+                {
+                    column: 'projects',
+                    title: 'אחוזת שטנר - ירושלים - 11/05',
+                    description: 'פרויקטים',
+                    priority: 1,
+                    equipment: 'מחברים'
+                },
+                {
+                    column: 'projects',
+                    title: 'דזינגוף עליון - מצלמות',
+                    description: 'פרויקטים',
+                    priority: 1,
+                    equipment: 'מצלמות'
+                },
+                {
+                    column: 'projects',
+                    title: 'מגדל המוזיקה - 60 לבן + 20 צהוב',
+                    description: 'פרויקטים',
+                    priority: 4,
+                    equipment: 'מרכזית'
+                },
+                {
+                    column: 'projects',
+                    title: 'מדיעין - תוספת נדף חגיגי לשעה',
+                    description: 'פרויקטים',
+                    priority: 5,
+                    equipment: 'ציוד'
+                },
+                {
+                    column: 'projects',
+                    title: 'עזריאלי - דיתר מזון רקות (יש אישור)',
+                    description: 'פרויקטים',
+                    priority: 6,
+                    equipment: '4 לוכמות ויציאות'
+                },
+                {
+                    column: 'projects',
+                    title: 'מנבח - א.ת - שירות חנייה',
+                    description: 'פרויקטים',
+                    priority: 7,
+                    equipment: 'ציוד חנייה'
+                },
+                {
+                    column: 'projects',
+                    title: 'מנבח - תפוסלים',
+                    description: 'פרויקטים',
+                    priority: 8,
+                    equipment: 'ציוד בסיסי'
+                },
+                {
+                    column: 'projects',
+                    title: 'מנבח - שיר הנביאטפון מזין',
+                    description: 'פרויקטים',
+                    priority: 3,
+                    equipment: 'ציוד מיוחד'
+                },
+                {
+                    column: 'projects',
+                    title: 'שרונה מרקם - יחידת מנט + מצלמות + התקנת 2 מסומנים',
+                    description: 'פרויקטים',
+                    priority: 0,
+                    equipment: 'כלי עבודה'
+                },
+                {
+                    column: 'projects',
+                    title: 'שיירי חזרה',
+                    description: 'פרויקטים',
+                    priority: 9,
+                    equipment: 'ציוד מיוחד'
+                },
+                {
+                    column: 'projects',
+                    title: 'מגסון ביוזד',
+                    description: 'פרויקטים',
+                    priority: 2,
+                    equipment: 'ציוד מיוחד'
+                },
+                {
+                    column: 'projects',
+                    title: 'מצלא טורס',
+                    description: 'פרויקטים',
+                    priority: 10,
+                    equipment: 'מצלמות'
+                },
+                {
+                    column: 'projects',
+                    title: 'אפליל רחובות',
+                    description: 'פרויקטים',
+                    priority: 11,
+                    equipment: 'אפליקציה'
+                },
+                {
+                    column: 'projects',
+                    title: 'מגדל איילון',
+                    description: 'פרויקטים',
+                    priority: 12,
+                    equipment: 'מערכת חנייה'
+                },
+                {
+                    column: 'projects',
+                    title: 'מגדל המאה - התקנת ציוד',
+                    description: 'פרויקטים',
+                    priority: 13,
+                    equipment: 'ציוד התקנה'
+                },
+                // אספקת ציוד
+                {
+                    column: 'supply',
+                    title: 'לח K 100 - חנויות ים',
+                    description: 'אספקת ציוד',
+                    priority: 1,
+                    equipment: 'כרטיסים'
+                },
+                {
+                    column: 'supply',
+                    title: 'לח K 100 - בית השכרת',
+                    description: 'אספקת ציוד',
+                    priority: 1,
+                    equipment: 'כרטיסים'
+                },
+                {
+                    column: 'supply',
+                    title: 'מגדל המוזיקה - 60 לבן + 20 צהוב',
+                    description: 'אספקת ציוד',
+                    priority: 2,
+                    equipment: 'כרטיסים'
+                },
+                {
+                    column: 'supply',
+                    title: 'לכב - איזור צמי - אירופונטיקה - 20',
+                    description: 'אספקת ציוד',
+                    priority: 4,
+                    equipment: 'כרטיסים'
+                },
+                {
+                    column: 'supply',
+                    title: 'לכנס לאמיני חשוח - 120',
+                    description: 'אספקת ציוד',
+                    priority: 0,
+                    equipment: 'כרטיסים'
+                }
+            ];
+
+            // ניקוי הרשימות
+            document.getElementById('projects-list').innerHTML = '';
+            document.getElementById('supply-list').innerHTML = '';
+            document.getElementById('tasks-list').innerHTML = '';
+
+            // סידור הנתונים לפי עדיפות
+            const sortedData = currentData.sort((a, b) => {
+                if (a.priority === 0) return 1;
+                if (b.priority === 0) return -1;
+                return a.priority - b.priority;
+            });
+
+            // הוספת הפריטים לעמודות
+            sortedData.forEach(data => {
+                const item = createItem(data);
+                const listId = data.column + '-list';
+                const list = document.getElementById(listId);
+                if (list) {
+                    list.appendChild(item);
+                }
+            });
+            
+            console.log('נתונים נטענו בהצלחה');
+        }
+
+        // פונקציה להצגת אינדיקטור עדכון
+        function showRefreshIndicator() {
+            const indicator = document.getElementById('refreshIndicator');
+            indicator.classList.add('show');
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 2000);
+        }
+
+        // פונקציה לעדכון
+        async function refreshData() {
+            showRefreshIndicator();
+            await loadData();
+        }
+
+        // אתחול הדף
+        async function initialize() {
+            console.log('מאתחל את המסך...');
+            updateDateTime();
+            await loadData();
+            
+            // כפתור רענון
+            document.getElementById('refreshBtn').addEventListener('click', refreshData);
+            
+            // עדכון השעה כל שנייה
+            setInterval(updateDateTime, 1000);
+            
+            // עדכון נתונים כל 3 דקות
+            setInterval(refreshData, 3 * 60 * 1000);
+            
+            console.log('המסך מוכן!');
+        }
+
+        // הפעלה בטעינת הדף
+        document.addEventListener('DOMContentLoaded', initialize);
+
+        // רענון ידני
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+                e.preventDefault();
+                refreshData();
+            }
+        });
+    </script>
+</body>
+</html>
