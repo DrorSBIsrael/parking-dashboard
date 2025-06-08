@@ -576,21 +576,7 @@
                         equipment: 'בדיקה סגול'
                     }
                 ];
-            } else {
-                console.log('יש חיבור - מציג נתונים מהשרת');
-                // אם יש נתונים אבל אין עדיפות 99, הוסף דוגמה אחת
-                const hasNinetyNinePriority = currentData.some(item => item.priority === 99);
-                if (!hasNinetyNinePriority) {
-                    currentData.push({
-                        column: 'tasks',
-                        title: '?? דוגמה - עדיפות 99',
-                        description: 'משימות שוטפות',
-                        priority: 99,
-                        equipment: 'דוגמה לעדיפות נמוכה'
-                    });
-                    console.log('הוספתי פריט דוגמה עם עדיפות 99');
-                }
-            }
+            } 
 
             // סדר הנתונים לפי עדיפות - עדיפות 99 בתחתית
             const sortedData = currentData.sort((a, b) => {
