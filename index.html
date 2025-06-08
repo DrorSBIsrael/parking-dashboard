@@ -389,7 +389,7 @@
         </div>
         <div class="header-controls">
             <div class="status-indicator" id="statusIndicator">מתחבר...</div>
-            <button id="refreshBtn" class="refresh-btn">🔄 רענן</button>
+            <button id="refreshBtn" class="refresh-btn">?? רענן</button>
         </div>
     </header>
 
@@ -526,7 +526,7 @@
                     throw new Error(data.error);
                 }
                 
-                updateStatus('connected', 'מחובר ✓');
+                updateStatus('connected', 'מחובר ?');
                 return data;
                 
             } catch (error) {
@@ -549,34 +549,48 @@
                 currentData = [
                     {
                         column: 'tasks',
-                        title: '🟢 בדיקה - עדיפות 1 (ירוק)',
+                        title: '?? בדיקה - עדיפות 1 (ירוק)',
                         description: 'משימות שוטפות',
                         priority: 1,
                         equipment: 'בדיקה'
                     },
                     {
                         column: 'tasks',
-                        title: '🟡 בדיקה - עדיפות 2 (צהוב)',
+                        title: '?? בדיקה - עדיפות 2 (צהוב)',
                         description: 'משימות שוטפות',
                         priority: 2,
                         equipment: 'בדיקה'
                     },
                     {
                         column: 'tasks',
-                        title: '⚫ בדיקה - עדיפות 3 (אפור)',
+                        title: '? בדיקה - עדיפות 3 (אפור)',
                         description: 'משימות שוטפות',
                         priority: 3,
                         equipment: 'בדיקה'
                     },
                     {
                         column: 'tasks',
-                        title: '🟣 בדיקה - עדיפות 99 (סגול)',
+                        title: '?? בדיקה - עדיפות 99 (סגול)',
                         description: 'משימות שוטפות',
                         priority: 99,
                         equipment: 'בדיקה סגול'
                     }
                 ];
-
+            } else {
+                console.log('יש חיבור - מציג נתונים מהשרת');
+                // אם יש נתונים אבל אין עדיפות 99, הוסף דוגמה אחת
+                const hasNinetyNinePriority = currentData.some(item => item.priority === 99);
+                if (!hasNinetyNinePriority) {
+                    currentData.push({
+                        column: 'tasks',
+                        title: '?? דוגמה - עדיפות 99',
+                        description: 'משימות שוטפות',
+                        priority: 99,
+                        equipment: 'דוגמה לעדיפות נמוכה'
+                    });
+                    console.log('הוספתי פריט דוגמה עם עדיפות 99');
+                }
+            }
 
             // סדר הנתונים לפי עדיפות - עדיפות 99 בתחתית
             const sortedData = currentData.sort((a, b) => {
