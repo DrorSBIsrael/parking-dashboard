@@ -42,53 +42,99 @@
     }
     .main-container { 
       display: flex; 
-      gap: 10px; 
+      gap: 20px; 
       padding: 20px; 
       flex-wrap: wrap;
+      max-width: 1400px;
+      margin: 0 auto;
     }
     .column { 
       flex: 1; 
       background: #fff; 
-      padding: 15px; 
-      border-radius: 8px; 
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-      min-width: 300px;
+      padding: 0; 
+      border-radius: 12px; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+      min-width: 320px;
+      overflow: hidden;
     }
     .column-header { 
       font-weight: bold; 
       font-size: 16px; 
-      margin-bottom: 15px; 
-      padding-bottom: 10px;
-      border-bottom: 2px solid #007bff;
-      color: #333;
+      margin: 0;
+      padding: 15px 20px;
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+    .column:nth-child(1) .column-header {
+      background: linear-gradient(135deg, #ff9800, #f57c00);
+    }
+    .column:nth-child(2) .column-header {
+      background: linear-gradient(135deg, #4caf50, #2e7d32);
+    }
+    .column:nth-child(3) .column-header {
+      background: linear-gradient(135deg, #9c27b0, #6a1b9a);
+    }
+    .column-content {
+      padding: 10px;
+      max-height: 70vh;
+      overflow-y: auto;
     }
     .item { 
-      padding: 12px; 
-      border-bottom: 1px solid #eee; 
+      padding: 12px 15px; 
       margin-bottom: 8px;
-      border-radius: 4px;
-      background: #fafafa;
+      border-radius: 8px;
+      background: #fff;
+      border-right: 4px solid transparent;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     .item:hover {
-      background: #f0f8ff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .item.priority-high { 
+      border-right-color: #f44336;
+      background: linear-gradient(to right, #ffebee, #fff);
+    }
+    .item.priority-medium { 
+      border-right-color: #ff9800;
+      background: linear-gradient(to right, #fff8e1, #fff);
+    }
+    .item.priority-low { 
+      border-right-color: #4caf50;
+      background: linear-gradient(to right, #f1f8e9, #fff);
     }
     .item-title { 
-      font-weight: bold; 
+      font-weight: 600; 
       color: #333;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
+      line-height: 1.4;
     }
     .item-priority {
-      font-size: 12px;
+      font-size: 11px;
       color: #666;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .priority-high { color: #dc3545; font-weight: bold; }
-    .priority-medium { color: #ffc107; font-weight: bold; }
-    .priority-low { color: #28a745; }
+    .priority-badge {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .priority-high .priority-badge { background: #f44336; }
+    .priority-medium .priority-badge { background: #ff9800; }
+    .priority-low .priority-badge { background: #4caf50; }
     .tooltip { 
-      font-size: 12px; 
-      color: #555; 
-      font-style: italic;
+      font-size: 11px; 
+      color: #666; 
+      background: #f8f9fa;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-top: 6px;
     }
     .loading {
       text-align: center;
@@ -128,21 +174,27 @@
 
   <div class="main-container">
     <div class="column">
-      <div class="column-header">משימות שוטפות</div>
-      <div id="tasks-list">
-        <div class="loading">טוען נתונים...</div>
+      <div class="column-header">אספקת ברזיסים ציוד</div>
+      <div class="column-content">
+        <div id="supply-list">
+          <div class="loading">טוען נתונים...</div>
+        </div>
       </div>
     </div>
     <div class="column">
       <div class="column-header">פרויקטים</div>
-      <div id="projects-list">
-        <div class="loading">טוען נתונים...</div>
+      <div class="column-content">
+        <div id="projects-list">
+          <div class="loading">טוען נתונים...</div>
+        </div>
       </div>
     </div>
     <div class="column">
-      <div class="column-header">אספקת ציוד</div>
-      <div id="supply-list">
-        <div class="loading">טוען נתונים...</div>
+      <div class="column-header">משימות שוטפות</div>
+      <div class="column-content">
+        <div id="tasks-list">
+          <div class="loading">טוען נתונים...</div>
+        </div>
       </div>
     </div>
   </div>
@@ -206,13 +258,17 @@
 
     function createItem(data) {
       const div = document.createElement("div");
-      div.className = "item";
       const priorityClass = getPriorityClass(data.priority);
       const priorityText = getPriorityText(data.priority);
       
+      div.className = `item ${priorityClass}`;
+      
       div.innerHTML = `
         <div class="item-title">${data.title}</div>
-        <div class="item-priority ${priorityClass}">עדיפות: ${priorityText} (${data.priority})</div>
+        <div class="item-priority">
+          <span class="priority-badge"></span>
+          עדיפות: ${priorityText}
+        </div>
         <div class="tooltip">ציוד: ${data.equipment}</div>
       `;
       return div;
@@ -226,21 +282,21 @@
         }
 
         // נוקה את התוכן הקיים
-        document.getElementById("tasks-list").innerHTML = '<div class="loading">טוען נתונים...</div>';
-        document.getElementById("projects-list").innerHTML = '<div class="loading">טוען נתונים...</div>';
-        document.getElementById("supply-list").innerHTML = '<div class="loading">טוען נתונים...</div>';
+        document.querySelector("#tasks-list").innerHTML = '<div class="loading">טוען נתונים...</div>';
+        document.querySelector("#projects-list").innerHTML = '<div class="loading">טוען נתונים...</div>';
+        document.querySelector("#supply-list").innerHTML = '<div class="loading">טוען נתונים...</div>';
 
         const data = await fetchFromAppScript();
         
         // נוקה שוב
-        document.getElementById("tasks-list").innerHTML = "";
-        document.getElementById("projects-list").innerHTML = "";
-        document.getElementById("supply-list").innerHTML = "";
+        document.querySelector("#tasks-list").innerHTML = "";
+        document.querySelector("#projects-list").innerHTML = "";
+        document.querySelector("#supply-list").innerHTML = "";
 
         if (data.length === 0) {
-          document.getElementById("tasks-list").innerHTML = '<div class="error">לא נמצאו נתונים. יש לבדוק את החיבור לטבלה.</div>';
-          document.getElementById("projects-list").innerHTML = '<div class="error">לא נמצאו נתונים</div>';
-          document.getElementById("supply-list").innerHTML = '<div class="error">לא נמצאו נתונים</div>';
+          document.querySelector("#tasks-list").innerHTML = '<div class="error">לא נמצאו נתונים. יש לבדוק את החיבור לטבלה.</div>';
+          document.querySelector("#projects-list").innerHTML = '<div class="error">לא נמצאו נתונים</div>';
+          document.querySelector("#supply-list").innerHTML = '<div class="error">לא נמצאו נתונים</div>';
           return;
         }
 
@@ -248,7 +304,7 @@
         data.sort((a, b) => a.priority - b.priority);
 
         data.forEach(item => {
-          const list = document.getElementById(item.column + "-list");
+          const list = document.querySelector("#" + item.column + "-list");
           if (list) {
             list.appendChild(createItem(item));
           }
@@ -256,7 +312,7 @@
 
         // אם אין פריטים בקטגוריה מסוימת
         ['tasks', 'projects', 'supply'].forEach(category => {
-          const list = document.getElementById(category + "-list");
+          const list = document.querySelector("#" + category + "-list");
           if (list && list.children.length === 0) {
             list.innerHTML = '<div class="loading">אין פריטים בקטגוריה זו</div>';
           }
@@ -264,9 +320,9 @@
 
       } catch (error) {
         console.error('שגיאה בטעינת הנתונים:', error);
-        document.getElementById("tasks-list").innerHTML = `<div class="error">שגיאה: ${error.message}</div>`;
-        document.getElementById("projects-list").innerHTML = '<div class="error">שגיאה בטעינת נתונים</div>';
-        document.getElementById("supply-list").innerHTML = '<div class="error">שגיאה בטעינת נתונים</div>';
+        document.querySelector("#tasks-list").innerHTML = `<div class="error">שגיאה: ${error.message}</div>`;
+        document.querySelector("#projects-list").innerHTML = '<div class="error">שגיאה בטעינת נתונים</div>';
+        document.querySelector("#supply-list").innerHTML = '<div class="error">שגיאה בטעינת נתונים</div>';
       }
     }
 
@@ -290,8 +346,8 @@
       updateDateTime();
       loadData();
       setInterval(updateDateTime, 1000);
-      // רענון אוטומטי כל 5 דקות
-      setInterval(loadData, 5 * 60 * 1000);
+      // רענון אוטומטי כל 2 דקות
+      setInterval(loadData, 2 * 60 * 1000);
     });
   </script>
 </body>
