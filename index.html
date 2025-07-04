@@ -59,6 +59,23 @@
             overflow-y: auto;
         }
 
+        .projects-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .projects-list-section {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .technicians-section {
+            flex: 0 0 400px;
+            border-top: 2px solid #17a2b8;
+            padding-top: 10px;
+        }
+
         .column-header {
             text-align: center;
             padding: 10px;
@@ -80,6 +97,13 @@
 
         .supply-header {
             background: linear-gradient(135deg, #ffc107, #fd7e14);
+        }
+
+        .technicians-header {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            font-size: 14px;
+            padding: 8px;
+            margin-bottom: 10px;
         }
 
         .item {
@@ -180,6 +204,39 @@
             height: 12px !important;
         }
 
+        /* טבלת טכנאים */
+        .technicians-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .technicians-table th {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            color: white;
+            padding: 8px 4px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #ddd;
+            font-size: 11px;
+        }
+
+        .technicians-table td {
+            padding: 6px 4px;
+            text-align: center;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 11px;
+        }
+
+        .technicians-table tr:nth-child(even) td {
+            background: #f8f9fa;
+        }
+
+        .technicians-table tr:hover td {
+            background: rgba(23, 162, 184, 0.1);
+        }
+
         .refresh-indicator {
             position: fixed;
             top: 20px;
@@ -268,6 +325,14 @@
                 padding: 15px;
             }
             
+            .projects-column {
+                flex-direction: column;
+            }
+            
+            .technicians-section {
+                flex: 0 0 150px;
+            }
+            
             .header {
                 padding: 10px 15px;
                 flex-direction: column;
@@ -312,16 +377,39 @@
             <div id="tasks-list"></div>
         </div>
 
-        <div class="column">
+        <div class="column projects-column">
             <div class="column-header projects-header">
                 פרויקטים
             </div>
-            <div id="projects-list"></div>
+            <div class="projects-list-section">
+                <div id="projects-list"></div>
+            </div>
+            
+            <div class="technicians-section">
+                <div class="column-header technicians-header">
+                    טכנאים
+                </div>
+                <table class="technicians-table">
+                    <thead>
+                        <tr>
+                            <th>טכנאי</th>
+                            <th>פרויקט</th>
+                            <th>שעה</th>
+                            <th>פעמים</th>
+                        </tr>
+                    </thead>
+                    <tbody id="technicians-table-body">
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: #666; padding: 10px; font-size: 10px;">טוען נתוני טכנאים...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="column">
             <div class="column-header supply-header">
-                אספקת כרטיסים ציוד
+                משימות שוטפות
             </div>
             <div id="supply-list"></div>
         </div>
@@ -332,7 +420,7 @@
         let currentData = [];
         let countdownTimer;
         let refreshInterval;
-        let timeLeft = 120; // 2 דקות במקום 30 שניות
+        let timeLeft = 120; // 2 דקות
 
         function updateDateTime() {
             const now = new Date();
@@ -353,7 +441,6 @@
         function createItem(data) {
             const item = document.createElement('div');
             
-            // וודא שעדיפות 99 נקראת נכון
             let priority = data.priority;
             if (priority === '99' || priority === 99) {
                 priority = 99;
@@ -361,14 +448,10 @@
             
             item.className = `item priority-${priority}`;
             
-            console.log('יוצר פריט עם עדיפות:', priority, 'מקורי:', data.priority, 'עבור:', data.title);
-            
-            // הוסף סטייל ישיר לעדיפות 99
             if (priority === 99) {
                 item.style.background = 'linear-gradient(135deg, #f3e5f5, #e1bee7)';
                 item.style.borderLeft = '4px solid #9c27b0';
                 item.style.border = '2px solid #9c27b0';
-                console.log('הוחל סטייל סגול לפריט:', data.title);
             }
             
             item.innerHTML = `
@@ -379,6 +462,17 @@
             `;
             
             return item;
+        }
+
+        function createTechnicianRow(data) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${data.technician || ''}</td>
+                <td>${data.site || ''}</td>
+                <td>${data.time || ''}</td>
+                <td>${data.times || ''}</td>
+            `;
+            return row;
         }
 
         function updateStatus(status, message) {
@@ -416,30 +510,93 @@
         async function loadData() {
             currentData = await fetchFromGoogleSheets();
 
+            // נקה את כל הרשימות
             document.getElementById('projects-list').innerHTML = '';
             document.getElementById('supply-list').innerHTML = '';
             document.getElementById('tasks-list').innerHTML = '';
+            document.getElementById('technicians-table-body').innerHTML = '';
 
-            // אם אין נתונים מהשרת
             if (currentData.length === 0) {
                 console.log('אין חיבור או נתונים מהטבלה');
                 document.getElementById('tasks-list').innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">אין נתונים זמינים</div>';
                 document.getElementById('projects-list').innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">אין נתונים זמינים</div>';
                 document.getElementById('supply-list').innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">אין נתונים זמינים</div>';
+                document.getElementById('technicians-table-body').innerHTML = '<tr><td colspan="4" style="text-align: center; color: #666; padding: 10px; font-size: 10px;">אין נתוני טכנאים זמינים</td></tr>';
                 return;
             } 
 
-            // סדר הנתונים לפי עדיפות - עדיפות 99 בתחתית
-            const sortedData = currentData.sort((a, b) => {
+            // הדפסת debug לראיה מה מגיע מהטבלה
+            console.log('כל הנתונים שנטענו:', currentData);
+            if (currentData.length > 0) {
+                console.log('דוגמה לשורה ראשונה:', currentData[0]);
+                console.log('שמות העמודות:', Object.keys(currentData[0]));
+            } 
+
+            // הפרד בין נתוני משימות לנתוני טכנאים
+            const taskData = [];
+            const technicianData = [];
+
+            currentData.forEach(row => {
+                // נתוני משימות רגילים
+	if (row.column && (row.column === 'tasks' || row.column === 'projects' || row.column === 'supply')) {
+	    taskData.push(row);
+	}
+	// הוסף את הקוד הזה מיד אחרי:
+	else if (row.column === 'technicians') {
+	    technicianData.push({
+	        technician: row.technician || '',
+	        site: row.site || '',
+	        time: row.time || '',
+	        times: row.times || ''
+	    });
+	}
+                // נתוני טכנאים לטבלה - ננסה כמה אפשרויות
+                // אפשרות 1: שמות עמודות בעברית
+                if (row['טכנאים'] || row['אתר'] || row['שעה'] || row['פעמים']) {
+                    technicianData.push({
+                        technician: row['טכנאים'] || '',
+                        site: row['אתר'] || '',
+                        time: row['שעה'] || '',
+                        times: row['פעמים'] || ''
+                    });
+
+            console.log('נתוני טכנאים שנמצאו:', technicianData);
+                }
+                // אפשרות 2: שמות עמודות באנגלית  
+                else if (row['technicians'] || row['site'] || row['time'] || row['times']) {
+                    technicianData.push({
+                        technician: row['technicians'] || '',
+                        site: row['site'] || '',
+                        time: row['time'] || '',
+                        times: row['times'] || ''
+                    });
+                }
+                // אפשרות 3: אם יש נתונים בכל עמודה מהטבלה
+                else {
+                    const allKeys = Object.keys(row);
+                    const allValues = Object.values(row);
+                    
+                    // נבדוק אם יש נתונים בעמודות J,K,L,M (אינדקסים 9,10,11,12)
+                    if (allValues.length > 12 && (allValues[9] || allValues[10] || allValues[11] || allValues[12])) {
+                        technicianData.push({
+                            technician: allValues[9] || '',
+                            site: allValues[10] || '',
+                            time: allValues[11] || '',
+                            times: allValues[12] || ''
+                        });
+                    }
+                }
+            });
+
+            // טעינת נתוני משימות
+            const sortedTaskData = taskData.sort((a, b) => {
                 if (a.priority === 99 && b.priority !== 99) return 1;
                 if (b.priority === 99 && a.priority !== 99) return -1;
                 if (a.priority === 99 && b.priority === 99) return 0;
                 return a.priority - b.priority;
             });
 
-            console.log('נתונים ממוינים:', sortedData);
-
-            sortedData.forEach(data => {
+            sortedTaskData.forEach(data => {
                 const item = createItem(data);
                 const listId = data.column + '-list';
                 const list = document.getElementById(listId);
@@ -447,6 +604,19 @@
                     list.appendChild(item);
                 }
             });
+
+            // טעינת נתוני טכנאים
+            const techTableBody = document.getElementById('technicians-table-body');
+            if (technicianData.length > 0) {
+                technicianData.forEach(techData => {
+                    if (techData.technician || techData.site || techData.time || techData.times) {
+                        const row = createTechnicianRow(techData);
+                        techTableBody.appendChild(row);
+                    }
+                });
+            } else {
+                techTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #666; padding: 10px; font-size: 10px;">אין נתוני טכנאים זמינים</td></tr>';
+            }
 
             // הצג הודעה אם אין פריטים בקטגוריה מסוימת
             ['tasks', 'projects', 'supply'].forEach(category => {
@@ -465,7 +635,6 @@
             }, 2000);
         }
 
-        // פונקציה לעדכון הספירה לאחור
         function updateCountdown() {
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
@@ -475,7 +644,6 @@
                 countdownElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
             }
             
-            // הצג את החיווי כשנשארו פחות מ-10 שניות
             const infoElement = document.getElementById('autoRefreshInfo');
             if (timeLeft <= 10 && infoElement) {
                 infoElement.classList.add('show');
@@ -486,17 +654,15 @@
             timeLeft--;
             
             if (timeLeft < 0) {
-                timeLeft = 120; // איפוס ל-2 דקות
+                timeLeft = 120;
                 refreshData();
             }
         }
 
-        // פונקציה מעודכנת לרענון
         async function refreshData() {
             showRefreshIndicator();
             await loadData();
             
-            // הסתר את חיווי הספירה לאחור אחרי רענון
             const infoElement = document.getElementById('autoRefreshInfo');
             if (infoElement) {
                 infoElement.classList.remove('show');
@@ -508,17 +674,14 @@
             await loadData();
             
             document.getElementById('refreshBtn').addEventListener('click', () => {
-                timeLeft = 120; // איפוס הספירה אחרי רענון ידני
+                timeLeft = 120;
                 refreshData();
             });
             
             setInterval(updateDateTime, 1000);
-            
-            // התחל ספירה לאחור
             countdownTimer = setInterval(updateCountdown, 1000);
         }
 
-        // הפעלה בעת טעינת הדף
         document.addEventListener('DOMContentLoaded', initialize);
 
         document.addEventListener('keydown', function(e) {
