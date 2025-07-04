@@ -416,7 +416,7 @@
     </div>
 
     <script>
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbysU4f2IoDpNok6O9-5uYHMXVZu6LaI0lMhRCoytBTZra26-NUlHf3x2cXZsreyuStD5A/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbziwvDO8mP2eNoRhnryk6eOaTM5azr9OEcYIbt4EiEaqHhRHT0936LMkiVzVrI58VMx/exec';
         let currentData = [];
         let countdownTimer;
         let refreshInterval;
@@ -464,16 +464,33 @@
             return item;
         }
 
-        function createTechnicianRow(data) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${data.technician || ''}</td>
-                <td>${data.site || ''}</td>
-                <td>${data.time || ''}</td>
-                <td>${data.times || ''}</td>
-            `;
-            return row;
+function createTechnicianRow(data) {
+    let timeStr = '';
+    const rawTime = data.time;
+
+    if (rawTime instanceof Date) {
+        timeStr = rawTime.getHours().toString().padStart(2, '0') + ':' +
+                  rawTime.getMinutes().toString().padStart(2, '0');
+    } else if (typeof rawTime === 'string') {
+        const date = new Date(`1970-01-01T${rawTime}`);
+        if (!isNaN(date.getTime())) {
+            timeStr = date.getHours().toString().padStart(2, '0') + ':' +
+                      date.getMinutes().toString().padStart(2, '0');
+        } else {
+            timeStr = rawTime; // fallback
         }
+    }
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${data.technician || ''}</td>
+        <td>${data.site || ''}</td>
+        <td>${timeStr}</td>
+        <td>${data.times || ''}</td>
+    `;
+    return row;
+}
+
 
         function updateStatus(status, message) {
             const indicator = document.getElementById('statusIndicator');
@@ -609,10 +626,11 @@
             const techTableBody = document.getElementById('technicians-table-body');
             if (technicianData.length > 0) {
                 technicianData.forEach(techData => {
-                    if (techData.technician || techData.site || techData.time || techData.times) {
-                        const row = createTechnicianRow(techData);
-                        techTableBody.appendChild(row);
-                    }
+if (techData.technician && techData.technician.trim()) {
+    const row = createTechnicianRow(techData);
+    techTableBody.appendChild(row);
+}
+
                 });
             } else {
                 techTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #666; padding: 10px; font-size: 10px;">אין נתוני טכנאים זמינים</td></tr>';
