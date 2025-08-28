@@ -378,11 +378,11 @@
         </div>
 
         <div class="column projects-column">
-            <div class="column-header projects-header">
-                פרויקטים
+            <div class="column-header supply-header">
+                אספקת ציוד
             </div>
             <div class="projects-list-section">
-                <div id="projects-list"></div>
+                <div id="supply-list"></div>
             </div>
             
             <div class="technicians-section">
@@ -408,10 +408,10 @@
         </div>
 
         <div class="column">
-            <div class="column-header supply-header">
-                משימות שוטפות
+            <div class="column-header projects-header">
+                פרויקטים
             </div>
-            <div id="supply-list"></div>
+            <div id="projects-list"></div>
         </div>
     </div>
 
@@ -542,14 +542,14 @@ function createTechnicianRow(data) {
                 return;
             } 
 
-            // הדפסת debug לראיה מה מגיע מהטבלה
+            // הדפסת debug לראייה מה מגיע מהטבלה
             console.log('כל הנתונים שנטענו:', currentData);
             if (currentData.length > 0) {
                 console.log('דוגמה לשורה ראשונה:', currentData[0]);
                 console.log('שמות העמודות:', Object.keys(currentData[0]));
             } 
 
-            // הפרד בין נתוני משימות לנתוני טכנאים
+            // הפרדה בין נתוני משימות לנתוני טכנאים
             const taskData = [];
             const technicianData = [];
 
@@ -636,7 +636,7 @@ if (techData.technician && techData.technician.trim()) {
                 techTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #666; padding: 10px; font-size: 10px;">אין נתוני טכנאים זמינים</td></tr>';
             }
 
-            // הצג הודעה אם אין פריטים בקטגוריה מסוימת
+            // הצב הודעה אם אין פריטים בקטגוריה מסויימת
             ['tasks', 'projects', 'supply'].forEach(category => {
                 const list = document.getElementById(category + '-list');
                 if (list && list.children.length === 0) {
