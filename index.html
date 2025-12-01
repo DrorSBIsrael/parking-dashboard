@@ -588,21 +588,22 @@ function createTechnicianRow(data) {
                         times: row['times'] || ''
                     });
                 }
-                // אפשרות 3: אם יש נתונים בכל עמודה מהטבלה
-                else {
-                    const allKeys = Object.keys(row);
-                    const allValues = Object.values(row);
-                    
-                    // נבדוק אם יש נתונים בעמודות J,K,L,M (אינדקסים 9,10,11,12)
-                    if (allValues.length > 19 && (allValues[16] || allValues[17] || allValues[17] || allValues[19])) {
-                        technicianData.push({
-                            technician: allValues[16] || '',
-                            site: allValues[17] || '',
-                            time: allValues[18] || '',
-                            times: allValues[19] || ''
-                        });
-                    }
-                }
+// אפשרות 3: אם יש נתונים בכל עמודה מהטבלה
+else {
+    const allKeys = Object.keys(row);
+    const allValues = Object.values(row);
+    
+    // תיקון: בדיקת עמודות Q, R, S, T (אינדקסים 16, 17, 18, 19)
+    // שים לב: במערך שמתחיל ב-0: Q=16, R=17, S=18, T=19
+    if (allValues.length > 19 && (allValues[16] || allValues[17] || allValues[18] || allValues[19])) {
+        technicianData.push({
+            technician: allValues[16] || '', // עמודה Q - שם טכנאי
+            site: allValues[17] || '',       // עמודה R - אתר
+            time: allValues[18] || '',       // עמודה S - שעה
+            times: allValues[19] || ''       // עמודה T - מספר
+        });
+    }
+}
             });
 
             // טעינת נתוני משימות
