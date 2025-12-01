@@ -594,12 +594,12 @@ function createTechnicianRow(data) {
                     const allValues = Object.values(row);
                     
                     // נבדוק אם יש נתונים בעמודות J,K,L,M (אינדקסים 9,10,11,12)
-                    if (allValues.length > 12 && (allValues[9] || allValues[10] || allValues[11] || allValues[12])) {
+                    if (allValues.length > 19 && (allValues[16] || allValues[17] || allValues[17] || allValues[19])) {
                         technicianData.push({
-                            technician: allValues[9] || '',
-                            site: allValues[10] || '',
-                            time: allValues[11] || '',
-                            times: allValues[12] || ''
+                            technician: allValues[16] || '',
+                            site: allValues[17] || '',
+                            time: allValues[18] || '',
+                            times: allValues[19] || ''
                         });
                     }
                 }
